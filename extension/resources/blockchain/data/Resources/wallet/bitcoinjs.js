@@ -3482,7 +3482,7 @@ Bitcoin.Util = {
             return [i];
         } else if (i <= 1<<16) {
             // unsigned short (LE)
-            return [0xfd, i >>> 8, i & 255];
+            return [0xfd, i & 255, i >>> 8]; // BitcoinQT wants big endian here
         } else if (i <= 1<<32) {
             // unsigned int (LE)
             return [0xfe].concat(Crypto.util.wordsToBytes([i]));
@@ -4246,8 +4246,7 @@ Bitcoin.ECDSA = (function () {
 
     ECKey.prototype.getBitcoinAddress = function () {
         var hash = this.getPubKeyHash();
-        var addr = new Bitcoin.Address(hash);
-        return addr;
+        return new Bitcoin.Address(hash);
     };
 
 
@@ -4263,8 +4262,7 @@ Bitcoin.ECDSA = (function () {
 
     ECKey.prototype.getBitcoinAddressCompressed = function () {
         var hash = this.getPubKeyHashCompressed();
-        var addr = new Bitcoin.Address(hash);
-        return addr.toString();
+        return new Bitcoin.Address(hash);
     }
 
     ECKey.prototype.setPub = function (pub) {
@@ -4515,8 +4513,7 @@ Bitcoin.ECKey = (function () {
 
     ECKey.prototype.getBitcoinAddress = function () {
         var hash = this.getPubKeyHash();
-        var addr = new Bitcoin.Address(hash);
-        return addr;
+        return new Bitcoin.Address(hash);
     };
 
 
@@ -4532,8 +4529,7 @@ Bitcoin.ECKey = (function () {
 
     ECKey.prototype.getBitcoinAddressCompressed = function () {
         var hash = this.getPubKeyHashCompressed();
-        var addr = new Bitcoin.Address(hash);
-        return addr.toString();
+        return new Bitcoin.Address(hash);
     }
 
     ECKey.prototype.setPub = function (pub) {

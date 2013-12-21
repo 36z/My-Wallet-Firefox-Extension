@@ -211,6 +211,7 @@ var AccountSettings = new function() {
             $('#notifications-confirmations').val(data.notifications_confirmations);
             $('#notifications-on').val(data.notifications_on);
             $('#pbkdf2-iterations').val(MyWallet.getMainPasswordPbkdf2Iterations());
+            $('#transactions_per_page').val(MyWallet.getNTransactionsPerPage());
 
             if (data.alias != null && data.alias.length > 0) {
                 $('#wallet-alias').val(data.alias);
@@ -662,6 +663,17 @@ var AccountSettings = new function() {
             });
         });
 
+
+        $('#transactions_per_page').unbind().change(function(e) {
+            var value = parseInt($(this).val());
+
+            MyWallet.setNTransactionsPerPage(value);
+
+            MyWallet.backupWallet('update', function() {
+                MyWallet.get_history();
+            });
+        });
+
         $('#wallet-email-code').unbind().change(function(e) {
             var code = $.trim($(this).val());
 
@@ -777,8 +789,12 @@ var AccountSettings = new function() {
             if (symbol != symbol_local)
                 toggleSymbol();
 
-            updateKV('Updating Local Currency', 'update-currency', $(this).val(), function() {
+            var code = $(this).val();
+            updateKV('Updating Local Currency', 'update-currency', code, function() {
+                var original_code = symbol_local.code;
+                symbol_local.code = code;
                 MyWallet.get_history();
+                symbol_local.code = original_code;
             });
         });
 
@@ -786,8 +802,12 @@ var AccountSettings = new function() {
             if (symbol != symbol_btc)
                 toggleSymbol();
 
-            updateKV('Updating BTC Currency', 'update-btc-currency', $(this).val(), function() {
+            var code = $(this).val();
+            updateKV('Updating BTC Currency', 'update-btc-currency', code, function() {
+                var original_code = symbol_btc.code;
+                symbol_btc.code = code;
                 MyWallet.get_history();
+                symbol_btc.code = original_code;
             });
         });
 
@@ -808,7 +828,6 @@ var AccountSettings = new function() {
         $('#notifications-confirmations').unbind().change(function(e) {
             updateKV('Updating Notification Confirmations', 'update-notifications-confirmations', $(this).val());
         });
-
 
         $('#account-logging').unbind().on('show', function() {
 

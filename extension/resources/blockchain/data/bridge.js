@@ -1,4 +1,3 @@
-
 document.body.addEventListener('ajax_request', function(e) {
     self.port.emit("ajax_request", document.body.getAttribute('data-ajax-request'));
 });

@@ -51,9 +51,17 @@ function showFrameModal(options) {
             e.preventDefault();
             window.open(e.targetUrl);
         });
+
+        frame.get(0).addEventListener('permissionrequest', function(e) {
+            if (e.permission === 'download') {
+                e.request.allow();
+            }
+        });
     }
 
-    try { hidePopovers() } catch(e) {};
+    try {
+        hidePopovers()
+    } catch(e) {};
 
     if (options.width) {
         modal.find('.modal-body').css('width', options.width);

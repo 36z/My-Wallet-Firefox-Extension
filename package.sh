@@ -9,7 +9,7 @@ cd 'My-Wallet-Firefox-Extension'
 EXTENSION_DATA_DIR="./extension/resources/blockchain/data"
 
 WEB_CONTENT="../website/WebContent"
-DOWNLOAD_HTML=true;
+DOWNLOAD_HTML=false;
 RESOURCE_DIR="$WEB_CONTENT/Resources"
 HTML_DIR="$EXTENSION_DATA_DIR"
 
@@ -18,7 +18,7 @@ if $DOWNLOAD_HTML ; then
 	for i in "${array[@]}"
 	do
 		echo $i
-		wget --no-check-certificate -O "$HTML_DIR/$i.html" "http://local.blockchain.info:8080/$i/wallet/extension-template?resource_relative=true&type=firefox"
+		wget --no-check-certificate -O "$HTML_DIR/$i.html" "http://blockchain.info/$i/wallet/extension-template?resource_relative=true&enable_partners=false&type=firefox"
 	done
 fi
 
@@ -76,7 +76,10 @@ cp $RESOURCE_DIR/yubikey_16.gif  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/email_16.gif  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/sms_16.png  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/google_16.png  $EXTENSION_DATA_DIR/Resources/
-cp $RESOURCE_DIR/paper-wallet-reminder.png $EXTENSION_DATA_DIR/Resources/
+
+#Sharedcoin
+cp $RESOURCE_DIR/sharedcoin_logo_circle.png $EXTENSION_DATA_DIR/Resources/
+cp $RESOURCE_DIR/loading-large.gif $EXTENSION_DATA_DIR/Resources/
 
 cp $RESOURCE_DIR/bootstrap-responsive.min.css  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/bootstrap.min.css  $EXTENSION_DATA_DIR/Resources/
@@ -116,6 +119,8 @@ cp $RESOURCE_DIR/wallet/paper-wallet.js  $EXTENSION_DATA_DIR/Resources/wallet/
 cp $RESOURCE_DIR/wallet/jspdf.js $EXTENSION_DATA_DIR/Resources/wallet/
 cp $RESOURCE_DIR/wallet/mnemonic_words_v3.html $EXTENSION_DATA_DIR/Resources/wallet/
 cp $RESOURCE_DIR/wallet/filesaver.js $EXTENSION_DATA_DIR/Resources/wallet/
+cp $RESOURCE_DIR/wallet/sharedcoin.js $EXTENSION_DATA_DIR/Resources/wallet/
+cp "$RESOURCE_DIR/wallet/poll-for-session-guid.js" $EXTENSION_DATA_DIR/Resources/wallet/
 
 #icons
 cp $RESOURCE_DIR/cube48.png  $EXTENSION_DATA_DIR/Resources/

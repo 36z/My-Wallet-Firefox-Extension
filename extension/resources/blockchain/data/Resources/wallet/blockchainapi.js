@@ -1,12 +1,27 @@
 var BlockchainAPI = new function() {
     var BlockchainAPI = this;
 
-    this.get_history = function(success, error, tx_filter, tx_page) {
+    this.get_history = function(success, error, tx_filter, offset, n) {
         MyWallet.setLoadingText('Loading transactions');
 
         var clientTime=(new Date()).getTime();
 
-        var data = {active : MyWallet.getActiveAddresses().join('|'), format : 'json', filter : tx_filter, offset : tx_page*5, ct : clientTime};
+        if (!tx_filter) tx_filter = 0;
+        if (!offset) offset = 0;
+        if (!n) n = 0;
+
+        var data = {
+            active : MyWallet.getActiveAddresses().join('|'),
+            format : 'json',
+            filter : tx_filter,
+            offset : offset,
+            no_compact : true,
+            ct : clientTime,
+            n : n,
+            language : MyWallet.getLanguage(),
+            symbol_btc : symbol_btc.code,
+            symbol_local : symbol_local.code
+        };
 
         $.ajax({
             type: "POST",
@@ -22,7 +37,7 @@ var BlockchainAPI = new function() {
 
                 try {
                     //Cache results to show next login
-                    if (tx_page == 0 && tx_filter == 0) {
+                    if (offset == 0 && tx_filter == 0) {
                         MyStore.put('multiaddr', JSON.stringify(obj));
                     }
 
@@ -252,7 +267,9 @@ var BlockchainAPI = new function() {
                     },
                     error : function(e) {
                         if (!e.responseText || e.responseText.indexOf('Parse:') == 0) {
-                            push_normal();
+                            setTimeout(function() {
+                                push_normal();
+                            }, 2000);
                         } else {
                             error(e ? e.responseText : null);
                         }
@@ -271,7 +288,7 @@ var BlockchainAPI = new function() {
         }
     }
 
-    this.get_unspent = function(fromAddresses, success, error) {
+    this.get_unspent = function(fromAddresses, success, error, confirmations) {
         //Get unspent outputs
         MyWallet.setLoadingText('Getting Unspent Outputs');
 
@@ -279,7 +296,7 @@ var BlockchainAPI = new function() {
             type: "POST",
             dataType: 'json',
             url: root +'unspent',
-            data: {active : fromAddresses.join('|'), format : 'json'},
+            data: {active : fromAddresses.join('|'), format : 'json', confirmations : confirmations ? confirmations : 0},
             success: function(obj) {
                 try {
                     if (obj.error != null) {

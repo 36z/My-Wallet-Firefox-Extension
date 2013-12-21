@@ -11,8 +11,15 @@ var mediator = Cc['@mozilla.org/appshell/window-mediator;1'].getService(Ci.nsIWi
 var console = {log : function(message){}};
 var Request = require("request").Request;
 var isDebug = false;
+var buttonAddded = false;
 
 function addToolbarButton() {
+    if (buttonAddded) {
+        return;
+    }
+
+    buttonAddded = true;
+
     var document = mediator.getMostRecentWindow("navigator:browser").document;
     var navBar = document.getElementById("nav-bar");
     if (!navBar) {
@@ -105,7 +112,7 @@ exports.main = function() {
     if (isDebug) {
         var logContentScript = "self.port.on('log_message', function(message) {" +
             "var newcontent = document.createElement('div');" +
-            "newcontent.innerHTML = message;" +
+            "newcontent.textContent = message;" +
             "document.body.appendChild(newcontent);" +
             "})";
 

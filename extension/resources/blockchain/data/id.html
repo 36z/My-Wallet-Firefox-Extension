@@ -23,6 +23,8 @@
     <script type="text/javascript" src="Resources/wallet/blockchainapi.js?"></script>
     <script type="text/javascript" src="Resources/wallet/wallet.js?"></script>
 
+    
+
     <script type="text/javascript" src="Resources/wallet/firefox.js?"></script>
     
     
@@ -94,7 +96,7 @@
 </div>
 
 <div id="main-notices-container" style="z-index:1; position:absolute; right:0px; margin:20px; width:auto; min-width:280px; overflow:visible; height:0px;">
-    <span id="notices" style="max-width: 600px; width:100%;"></span>
+    <span id="notices" style="max-width:600px;width:auto;"></span>
 </div>
 
 <div style="width:100%; float:left; clear:both"></div>
@@ -128,7 +130,9 @@
             <li class="nav-header">Informasi Akun</li>
             <li class="active"><a href="#account-information" data-toggle="tab"><i class="icon-user"></i> Pribadi</a></li>
             <li><a href="#account-general" data-toggle="tab"><i class="icon-wrench"></i> Umum</a></li>
+            <li><a href="#account-display" data-toggle="tab"><i class="icon-eye-open"></i> Memperlihatkan</a></li>
             <li><a href="#account-notifications" data-toggle="tab"><i class="icon-bell"></i> Pemberitahuan</a></li>
+
             <li class="divider"></li>
             <li><a href="#account-passwords" data-toggle="tab"><i class="icon-tasks"></i> Password</a></li>
             <li><a href="#account-security" data-toggle="tab"><i class="icon-lock"></i> Keamanan</a></li>
@@ -254,35 +258,11 @@
 <div class="tab-pane" id="account-general">
 
     <div class="page-header">
-        <h3>Bahasa</h3>
-
-        <p>Mengatur bahasa pilihan Anda di bawah ini</p>
-
-        <select id="language_select"></select>
-    </div>
-
-    <div class="page-header">
-        <h3>Mata Uang Lokal</h3>
-
-        <p>Anda dapat dengan cepat beralih antara bitcoins dan mata uang lokal Anda dengan mengklik neraca di kanan atas.</p>
-
-        <select id="local_currency"></select>
-    </div>
-
-    <div class="page-header">
         <h3>Menangani Bitcoin Links</h3>
 
         <p>Apakah Anda ingin mengatur blockchain.info sebagai penangan default bitcoin link? Bitcoin link (URI) digunakan untuk secara otomatis masukkan alamat bitcoin penerima dan mengirim nilai saat diklik.</p>
 
         <button class="btn btn-secondary" id="register-uri-handler">Daftar URI Handler</button>
-    </div>
-
-    <div class="page-header">
-        <h3>Bitcoin Tampilan</h3>
-
-        <p>Sesuaikan presisi Anda akan memilih nilai bitcoin yang akan ditampilkan masuk</p>
-
-        <select id="btc_currency"></select>
     </div>
 
     <div class="page-header">
@@ -335,6 +315,50 @@
         </p>
     </div>
 </div>
+
+
+<div class="tab-pane" id="account-display">
+
+    <div class="page-header">
+        <h3>Bahasa</h3>
+
+        <p>Mengatur bahasa pilihan Anda di bawah ini</p>
+
+        <select id="language_select"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Mata Uang Lokal</h3>
+
+        <p>Anda dapat dengan cepat beralih antara bitcoins dan mata uang lokal Anda dengan mengklik neraca di kanan atas.</p>
+
+        <select id="local_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Bitcoin Tampilan</h3>
+
+        <p>Sesuaikan presisi Anda akan memilih nilai bitcoin yang akan ditampilkan masuk</p>
+
+        <select id="btc_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Transaksi Per Halaman</h3>
+
+        <p>Mengatur jumlah transaksi ditampilkan per halaman</p>
+
+        <p>
+            <select id="transactions_per_page">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </p>
+    </div>
+</div>
+
 
 <div class="tab-pane" id="account-notifications">
     <div class="page-header">
@@ -885,9 +909,7 @@
                         <div class="tab-pane active" style="text-align:right" id="deposit-us">
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fcashintocoins.com%3Fcode%3Dblockchain%26address%3D" id="cash-into-coins" target="blank">Cash Into Coins</a>
 
                             
                                 
@@ -899,9 +921,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposit</a>
 
                             
                                 
@@ -912,9 +932,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposit</a>
                         </div>
 
                         <div class="tab-pane" id="deposit-other">
@@ -922,6 +940,8 @@
                         </div>
                     </div>
                 </div>
+            
+
             
 
             <div class="page-header" id="home-account-container">
@@ -933,7 +953,6 @@
                     <button class="btn" id="my-account-btn">Pengaturan Akun</button>
                 </p>
             </div>
-
 
             <div id="home-backup-container">
                 <h3>Backup</h3>
@@ -969,8 +988,8 @@
                     <th>Saldo</th>
                     <th></th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
 
             <button class="btn btn-success pop pull-right" id="new-addr" style="margin:5px" title="Alamat Baru" data-content="Klik di sini untuk menghasilkan alamat Bitcoin baru. Anda dapat mulai menerima bitcoins ke alamat ini segera">Alamat Baru</button>
@@ -996,7 +1015,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                <th><input type="checkbox" id="enable_archived_checkbox"></th>
+                <th></th>
                 <th>Alamat Bitcoin</th>
                 <th></th>
                 <th></th>
@@ -1004,11 +1023,14 @@
                 <tbody></tbody>
             </table>
 
-            <div class="pull-right btn-group">
-                <button class="btn btn-secondary pop" id="archived-sweep" title="Sapu Private Keys" data-content="Pindahkan setiap bitcoins dalam kunci yang dipilih ke alamat Bitcoin yang berbeda.">Sapu Private Keys
-                </button>
-                <button class="btn btn-danger pop" id="archived-delete" title="Hapuskan Tombol" data-content="Hapus kunci pribadi yang dipilih.">Hapuskan Tombol
-                </button>
+            <div style="float:left">
+                <button class="btn btn-secondary" id="archived-select-all">Pilih Semua</button>
+                <button class="btn btn-secondary" id="archived-select-none">Pilih None</button>
+            </div>
+
+            <div style="float:right">
+                <button class="btn btn-secondary pop" id="archived-sweep" title="Sapu Private Keys" data-content="Pindahkan setiap bitcoins dalam kunci yang dipilih ke alamat Bitcoin yang berbeda.">Sapu Private Keys</button>
+                <button class="btn btn-danger pop" id="archived-delete" title="Hapuskan Tombol" data-content="Hapus kunci pribadi yang dipilih.">Hapuskan Tombol</button>
             </div>
         </div>
 
@@ -1028,8 +1050,8 @@
                     <th class="hidden-phone">Maju ke</th>
                     <th>Habis Dalam</th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
             <button class="btn btn-success pull-right" id="shared-address" style="margin:5px">Baru Bersama Alamat</button>
         </div>
@@ -1112,7 +1134,7 @@
                 <div class="well auth-2" style="display:none;margin: 0 auto; margin-top: 10px; max-width: 470px;">
                     <h5>Tidak Dapat Menemukan Kode Email Anda?</h5>
 
-                    <p>Email akan dikirim dari wallet@blockchain.info. Pastikan untuk memeriksa folder spam Anda. Jika Anda masih tidak dapat menemukan email klik tombol di bawah ini untuk mengirimnya kembali.</p>
+                    <p>Pastikan untuk memeriksa folder spam Anda. Jika Anda masih tidak dapat menemukan email klik tombol di bawah ini untuk mengirim ulang.</p>
 
                     <p align="center">
                         <a class="btn resend-code">Kirim ulang Tautan</a>
@@ -1221,7 +1243,9 @@
             <li class="nav-header">Jenis Transaksi</li>
             <li class="active"><a href="#send-quick" data-toggle="tab"><i class="icon-time"></i> Cepat Kirim</a></li>
             <li><a href="#send-custom" data-toggle="tab"><i class="icon-cog"></i> Adat</a></li>
+            <li><a href="#shared-coin" data-toggle="tab"><i class="icon-random"></i> Coin Bersama</a></li>
             <li><a href="#send-shared" data-toggle="tab"><i class="icon-random"></i> Bersama Kirim</a></li>
+
             <li class="hidden"><a href="#send-email" data-toggle="tab"><i class="icon-lock"></i> Escrow</a></li>
 
             <li class="nav-header">Kirim Via</li>
@@ -1230,6 +1254,8 @@
 
             <li class="nav-header">Pertandingan</li>
             <li><a href="#send-satoshi-dice" data-toggle="tab"><i class="icon-dice" style="background-image:url('Resources/dice.png');background-position: 0px;width:16px;height:16px;"></i> Satoshi Dice</a></li>
+
+            
 
             <li class="divider"></li>
             <li class="nav-header">Alat</li>
@@ -1259,7 +1285,7 @@
                     <label class="control-label pop" title="Untuk Alamat" data-content="Ini adalah Alamat Bitcoin penerima.">Untuk:</label>
 
                     <div class="controls">
-                        <span class="qrcodeicon" /><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
+                        <span class="qrcodeicon"><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
 
                         <p class="help-block">Masukkan Alamat Bitcoin dari Penerima</p>
                     </div>
@@ -1387,6 +1413,81 @@
     </div>
 </div>
 
+<div class="tab-pane" id="shared-coin">
+    <div class="well">
+        <a style="float:right;" href="https://blockchain.info/r?url=https%3A%2F%2Fsharedcoin.com" target="blank"><img src="Resources/info.png"></a>
+
+        <h4 class="page-header">Coin Bersama<br/><small>Yg tak dpt dipercaya pencampuran koin menggunakan koin bergabung dan analisis noda</small></h4>
+
+        <div class="form-horizontal">
+            <div class="controls">
+                <img src="Resources/sharedcoin_logo_circle.png" style="padding-bottom:25px">
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop" title="Dari Alamat" data-content="Jika diperlukan, Anda boleh memilih untuk mengirim koin dari alamat tertentu di dompet Anda.">Dari:</label>
+
+                <div class="controls">
+                    <select name="from" multiple="multiple"></select>
+                </div>
+            </div>
+
+            <div class="recipient-container">
+                <div class="recipient">
+                    <div class="control-group">
+                        <label class="control-label pop" title="Untuk Alamat" data-content="Ini adalah Alamat Bitcoin penerima.">Untuk:</label>
+
+                        <div class="controls">
+                            <span class="qrcodeicon" /><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label pop">Jumlah:</label>
+
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-value" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop">Pengulangan:</label>
+
+                <div class="controls">
+                    <select name="repetitions"><option value="0">Pemuatan</option></select>
+                    <p class="help-block">Sebuah jumlah yang lebih tinggi dari pengulangan membuat transaksi lebih sulit untuk melacak dan meningkatkan privasi.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="send btn btn-primary pop" title="Ulasan Pembayaran" data-content="Klik disini untuk meninjau pembayaran. Anda akan dapat mengkonfirmasi atau membatalkan transaksi.">Ulasan Pembayaran</button>
+
+                <p class="help-block send-options" style="padding-top:10px">
+                    <b>Maksimum Kirim Nilai:</b> <span></span><br />
+                    <b>Minimum Nilai Kirim:</b> <span></span><br />
+                    <b>Biaya Persen Per Pengulangan:</b> <span></span>%</br />
+                    <b>Biaya Minimum Per Pengulangan:</b> <span></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <h4 style="margin-bottom: 5px">Sesuatu yang tidak beres?</h4>
+
+        <p>
+            Ketika mengirimkan transaksi koin bersama sejumlah alamat perantara yang digunakan. Jika ada interupts proses atau kesalahan mencegah transaksi dari menyelesaikan koin dapat dibiarkan di alamat menengah. Klik tombol di bawah untuk mengklaim uang yang tersisa di alamat menengah, proses ini dapat memakan waktu beberapa menit untuk menyelesaikan.
+        </p>
+
+        <p>
+            <button class="btn" id="sharedcoin-recover">Recover Alamat Menengah</button>
+        </p>
+    </div>
+</div>
+
 <div class="tab-pane" id="send-shared">
     <div class="well">
         <a style="float:right;" href="https://blockchain.info/wallet/send-shared" target="blank"><img src="Resources/info.png"></a>
@@ -1400,18 +1501,18 @@
                         <label class="control-label pop" title="Untuk Alamat" data-content="Ini adalah Alamat Bitcoin penerima.">Untuk:</label>
 
                         <div class="controls">
-                            <span class="qrcodeicon" /><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
+                            <span class="qrcodeicon"><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
 
                             <p class="help-block">Masukkan Alamat Bitcoin dari Penerima</p>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label pop" title="Amount" data-content="The Amount in Bticoins to Send">Amount:</label>
+                        <label class="control-label pop">Jumlah:</label>
 
                         <div class="controls">
                             <div class="input-prepend input-append">
-                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" name="send-value"/><span
+                                <span class="add-on btc-symbol"></span><input class="span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" class="send-value" name="send-value"/><span
                                     class="add-on send-value-usd">$0</span>
                             </div>
 
@@ -1455,7 +1556,7 @@
 
             <div class="controls recipient-container">
                 <div class="recipient" style="margin-bottom:5px">
-                    <span class="qrcodeicon" /><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
+                    <span class="qrcodeicon"><input placeholder="Bitcoin Alamat" name="send-to-address" type="text"/><span></span></span>
 
                     <div class="input-prepend input-append">
                         <span class="add-on btc-symbol"></span><input class="send-value span2" name="send-value" style="width:90px;" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
@@ -1480,8 +1581,8 @@
             <label class="control-label pop" title="Biaya Penambang" data-content="Biaya ini akan dikirim ke para penambang Bitcoin dan dapat membantu transaksi anda diproses lebih cepat">Biaya Penambang:</label>
 
             <div class="controls">
-                <div class="input-prepend" style="width:220px">
-                    <span class="add-on btc-symbol"></span><input class="span2" placeholder="0.0" name="fees" style="min-width:55px;width:55px" type="text"/>
+                <div class="input-prepend input-append" style="width:220px">
+                    <span class="add-on btc-symbol"></span><input class="span2" name="fees" placeholder="0.0" type="text" style="width:90px;"/><span class="add-on send-value-usd">$0</span>
                 </div>
             </div>
         </div>
@@ -1513,7 +1614,7 @@
     <div class="tab-pane" id="send-satoshi-dice" data-name="satoshidice">
         <div class="well">
             <h4 class="page-header">Bertaruh Dengan SatoshiDICE<br/>
-                <small><a href="https://blockchain.info/r?url=http://SatoshiDice.com" target="new">SatoshiDICE</a> adalah permainan taruhan Bitcoin yang paling populer. Menang sampai 64.000 x taruhan Anda, langsung. Semua taruhan boleh diverifikasi menggunakan blockchain.</small>
+                <small><a href="https://blockchain.info/r?url=http://satoshidice.com" target="new">SatoshiDICE</a> adalah permainan taruhan Bitcoin yang paling populer. Menang sampai 64.000 x taruhan Anda, langsung. Semua taruhan boleh diverifikasi menggunakan blockchain.</small>
             </h4>
 
             <div class="form-horizontal">
@@ -1634,19 +1735,6 @@
             </div>
 
             <div class="page-header">
-                <h3>Otak Dompet</h3>
-
-                <p>Sebuah Dompet Brain adalah kunci pribadi unggulan dari kenangan pass-frase. Hal ini dimungkinkan untuk menghafal password ini untuk mengembalikan dana di alamat ini tanpa perlu cadangan dompet.</p>
-
-                <p>Panjang pass-frase minimum adalah 15 karakter. Hal ini sangat disarankan Anda masih menyimpan backup dompet biasa bahkan dengan pass-frase hafal.</p>
-
-                <div class="form-inline">
-                    <input placeholder="pass-phrase" id="import-brain-wallet" type="text"/>
-                    <button class="btn btn-primary" style="min-width:171px" id="import-brain-wallet-btn">Menghasilkan Kunci</button>
-                </div>
-            </div>
-
-            <div class="page-header">
                 <h3>Impor Menggunakan Dompet Kertas</h3>
 
                 <p>Gunakan Webcam Anda untuk memindai kode QR dari dompet kertas</p>
@@ -1757,40 +1845,6 @@
             </div>
         </div>
 
-        <div id="import-second-password-modal" class="modal hide">
-            <div class="modal-header">
-                <h3>Kedua Dompet Sandi</h3>
-            </div>
-            <div class="modal-body">
-                <p>Silakan masukkan password kedua untuk dompet ini.</p>
-                <p align="center">
-                    <b>Password kedua:</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Terus</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="import-private-key-password" class="modal hide">
-            <div class="modal-header">
-                <h3>Dienkripsi Kunci Privat</h3>
-            </div>
-            <div class="modal-body">
-                <p>Sebuah kunci pribadi dienkripsi telah terdeteksi. Masukkan enkripsi passphrase berikut:</p>
-                <p align="center">
-                    <b>Passphrase::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Terus</button>
-                </div>
-            </div>
-        </div>
-
         <div id="import-password-modal" class="modal hide">
             <div class="modal-header">
                 <h3>Dompet Sandi</h3>
@@ -1830,6 +1884,7 @@
     </div>
 </div>
 </div></div>
+</div>
 </div>
 
 
@@ -1946,6 +2001,13 @@
                 <label class="control-label">Label:</label>
                 <div class="controls">
                     <input name="label" placeholder="Label misalnya Tabungan" type="text" /><p class="help-block">Sebuah label digunakan untuk membantu Anda mengingat apa alamat ini adalah untuk. Hal ini dapat nama seseorang atau perusahaan.</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Membuat Publik?</label>
+                <div class="controls">
+                    <input name="make_public" type="checkbox" /><p class="help-block">Menurut alamat default label hanya terlihat oleh Anda. Label umum publik terlihat di situs blockchain dan dapat dilihat oleh siapa saja.</p>
                 </div>
             </div>
         </div>
@@ -2177,23 +2239,51 @@
 </div>
 
 
-<div id="ask-for-shared" class="modal hide">
-    <div class="modal-header">
-        <h3>Kirim Dibagi?</h3>
-    </div>
-    <div class="modal-body">
-        <p>Kirim transaksi ini melalui dompet bersama dan mendapatkan <span class="bonus-percent"></span>% bonus (<span class="bonus-value"></span> akan dikirim kembali ke alamat pengirim). Transaksi ini akan dikenakan penundaan sekitar <span class="delay"></span>.</p>
 
-        <div class="alert alert-block alert-error" style="margin: 10px;">
-            Jangan menerima jika Anda berharap untuk menerima pembayaran kembali ke alamat pengirim. Bersama transaksi tidak sesuai dengan SatoshiDICE, BitLotto dan banyak permainan Bitcoin lainnya.
+    <div id="ask-for-shared" class="modal hide">
+        <div class="modal-header">
+            <h3>Kirim Dibagi?</h3>
+        </div>
+        <div class="modal-body">
+            <p>Kirim transaksi ini melalui dompet bersama dan mendapatkan <span class="bonus-percent"></span>% bonus (<span class="bonus-value"></span> akan dikirim kembali ke alamat pengirim). Transaksi ini akan dikenakan penundaan sekitar <span class="delay"></span>.</p>
+
+            <div class="alert alert-block alert-error">
+                    Jangan menerima jika Anda berharap untuk menerima pembayaran kembali ke alamat pengirim. Bersama transaksi tidak sesuai dengan SatoshiDICE, BitLotto dan banyak permainan Bitcoin lainnya.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-left"><input type="checkbox" id="shared-never-ask">Jangan tanya saya lagi.</div>
+
+            <div class="btn-group pull-right">
+                <button class="btn btn-secondary">Lanjutkan Tanpa</button>
+                <button class="btn btn-primary">Kirim Dibagi?</button>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <div class="pull-left"><input type="checkbox" id="shared-never-ask">Jangan tanya saya lagi.</div>
 
-        <div class="btn-group pull-right">
-            <button class="btn btn-secondary">Lanjutkan Tanpa</button>
-            <button class="btn btn-primary">Kirim Dibagi?</button>
+
+<div id="sharedcoin-modal" class="modal hide">
+    <div class="modal-header">
+        <h3>Bersama Transaksi Coin</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block alert-error">
+            Terjadi kesalahan menyelesaikan transaksi ini koin bersama. Untuk informasi lebih lanjut silahkan cek konsol javascript.
+        </div>
+
+        <div class="alert alert-block alert-warning">
+            Transaksi berlangsung. Jangan tutup jendela ini atau keluar dari browser.
+        </div>
+
+        <p align="center" class="loading-indicator" style="display:none;padding:10px;">
+            <img src="Resources/loading-large.gif"><br /><br /><span class="loading-text" style="font-weight:bold;font-size:16px;"></span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-left">Send <span class="total_value" style="font-weight:bold"></span> to <span class="address" style="font-weight:bold"></span></div>
+
+            <div class="btn-group pull-right">
+            <button class="btn btn-secondary">Membatalkan</button>
         </div>
     </div>
 </div>
@@ -2224,8 +2314,8 @@
         <h3>Biaya Penambang Direkomendasikan</h3>
     </div>
     <div class="modal-body">
-        <p>Transaksi ini merupakan prioritas rendah. Disarankan Anda menyertakan setidaknya biaya transaksi 0,0005 BTC untuk memastikan penambang memprosesnya.</p>
-        <div class="alert alert-block alert-error" style="margin: 10px;">Jika Anda tidak termasuk biaya transaksi ini mungkin memakan waktu lama untuk mendapatkan konfirmasi. Setiap dana akan dikembalikan kepada Anda dalam sekitar 24 jam.</div>
+        <p>Transaksi ini merupakan prioritas rendah. Disarankan Anda menyertakan setidaknya biaya transaksi 0,0001 BTC untuk memastikan penambang memprosesnya.</p>
+        <div class="alert alert-block alert-error">Jika Anda tidak termasuk biaya transaksi ini mungkin memakan waktu lama untuk mendapatkan konfirmasi. Setiap dana akan dikembalikan kepada Anda dalam sekitar 24 jam.</div>
     </div>
     <div class="modal-footer">
         <div class="btn-group pull-right">
@@ -2408,13 +2498,13 @@
         <h4 class="page-header">Blockchain.info Is Offline</h4>
 
         <p>
-           <ul>
-              <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
-              <li>Launch the application. Choose Tools -> Import Private Keys.</li>
-              <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
-              <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
-              <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
-            </ul>
+        <ul>
+            <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
+            <li>Launch the application. Choose Tools -> Import Private Keys.</li>
+            <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
+            <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
+            <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
+        </ul>
         </p>
     </div>
 
@@ -2425,6 +2515,22 @@
     </div>
 </div>
 
+<div id="import-private-key-password" class="modal hide">
+    <div class="modal-header">
+        <h3>Dienkripsi Kunci Privat</h3>
+    </div>
+    <div class="modal-body">
+        <p>Sebuah kunci pribadi dienkripsi telah terdeteksi. Masukkan enkripsi passphrase berikut:</p>
+        <p align="center">
+            <b>Passphrase::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary">Terus</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

@@ -23,6 +23,8 @@
     <script type="text/javascript" src="Resources/wallet/blockchainapi.js?"></script>
     <script type="text/javascript" src="Resources/wallet/wallet.js?"></script>
 
+    
+
     <script type="text/javascript" src="Resources/wallet/firefox.js?"></script>
     
     
@@ -94,7 +96,7 @@
 </div>
 
 <div id="main-notices-container" style="z-index:1; position:absolute; right:0px; margin:20px; width:auto; min-width:280px; overflow:visible; height:0px;">
-    <span id="notices" style="max-width: 600px; width:100%;"></span>
+    <span id="notices" style="max-width:600px;width:auto;"></span>
 </div>
 
 <div style="width:100%; float:left; clear:both"></div>
@@ -128,7 +130,9 @@
             <li class="nav-header">Informazioni sul Conto</li>
             <li class="active"><a href="#account-information" data-toggle="tab"><i class="icon-user"></i> Personale</a></li>
             <li><a href="#account-general" data-toggle="tab"><i class="icon-wrench"></i> Generali</a></li>
+            <li><a href="#account-display" data-toggle="tab"><i class="icon-eye-open"></i> Mostrare</a></li>
             <li><a href="#account-notifications" data-toggle="tab"><i class="icon-bell"></i> Notifiche</a></li>
+
             <li class="divider"></li>
             <li><a href="#account-passwords" data-toggle="tab"><i class="icon-tasks"></i> Password</a></li>
             <li><a href="#account-security" data-toggle="tab"><i class="icon-lock"></i> Sicurezza</a></li>
@@ -254,35 +258,11 @@
 <div class="tab-pane" id="account-general">
 
     <div class="page-header">
-        <h3>Lingua</h3>
-
-        <p>Imposta la tua lingua preferita qui sotto</p>
-
-        <select id="language_select"></select>
-    </div>
-
-    <div class="page-header">
-        <h3>Valuta Locale</h3>
-
-        <p>Puoi passare rapidamente da bitcoin alla tua valuta locale cliccando sul saldo nell'angolo in alto a destra.</p>
-
-        <select id="local_currency"></select>
-    </div>
-
-    <div class="page-header">
         <h3>Maneggiare Bitcoin Links</h3>
 
         <p>Volete impostare blockchain.info come gestore predefinito dei link bitcoin? Bitcoin link (URI) vengono utilizzati per immettere automaticamente un indirizzo bitcoin destinatario e inviare il valore quando si fa clic.</p>
 
         <button class="btn btn-secondary" id="register-uri-handler">Registrati URI Handler</button>
-    </div>
-
-    <div class="page-header">
-        <h3>Bitcoin display</h3>
-
-        <p>Regolare la precisione si preferisce valori bitcoin da visualizzare dentro</p>
-
-        <select id="btc_currency"></select>
     </div>
 
     <div class="page-header">
@@ -335,6 +315,50 @@
         </p>
     </div>
 </div>
+
+
+<div class="tab-pane" id="account-display">
+
+    <div class="page-header">
+        <h3>Lingua</h3>
+
+        <p>Imposta la tua lingua preferita qui sotto</p>
+
+        <select id="language_select"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Valuta Locale</h3>
+
+        <p>Puoi passare rapidamente da bitcoin alla tua valuta locale cliccando sul saldo nell'angolo in alto a destra.</p>
+
+        <select id="local_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Bitcoin display</h3>
+
+        <p>Regolare la precisione si preferisce valori bitcoin da visualizzare dentro</p>
+
+        <select id="btc_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Operazioni per pagina</h3>
+
+        <p>Impostare il numero di transazioni visualizzati per pagina</p>
+
+        <p>
+            <select id="transactions_per_page">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </p>
+    </div>
+</div>
+
 
 <div class="tab-pane" id="account-notifications">
     <div class="page-header">
@@ -885,9 +909,7 @@
                         <div class="tab-pane active" style="text-align:right" id="deposit-us">
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposito</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fcashintocoins.com%3Fcode%3Dblockchain%26address%3D" id="cash-into-coins" target="blank">Cash Into Coins</a>
 
                             
                                 
@@ -899,9 +921,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposito</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposito</a>
 
                             
                                 
@@ -912,9 +932,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposito</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposito</a>
                         </div>
 
                         <div class="tab-pane" id="deposit-other">
@@ -922,6 +940,8 @@
                         </div>
                     </div>
                 </div>
+            
+
             
 
             <div class="page-header" id="home-account-container">
@@ -933,7 +953,6 @@
                     <button class="btn" id="my-account-btn">Impostazioni del conto</button>
                 </p>
             </div>
-
 
             <div id="home-backup-container">
                 <h3>salvataggio</h3>
@@ -969,8 +988,8 @@
                     <th>Saldo</th>
                     <th></th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
 
             <button class="btn btn-success pop pull-right" id="new-addr" style="margin:5px" title="Nuovo Indirizzo" data-content="Clicca qui per generare un nuovo indirizzo bitcoin. Puoi iniziare subito a ricevere bitcoin su questo indirizzo">Nuovo Indirizzo</button>
@@ -996,7 +1015,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                <th><input type="checkbox" id="enable_archived_checkbox"></th>
+                <th></th>
                 <th>Indirizzo Bitcoin</th>
                 <th></th>
                 <th></th>
@@ -1004,11 +1023,14 @@
                 <tbody></tbody>
             </table>
 
-            <div class="pull-right btn-group">
-                <button class="btn btn-secondary pop" id="archived-sweep" title="Pulisci le Chiavi" data-content="Sposta i bitcoin eventualmente presenti nelle chiavi selezionate a un differente indirizzo bitcoin.">Pulisci le Chiavi
-                </button>
-                <button class="btn btn-danger pop" id="archived-delete" title="Cancella le Chiavi" data-content="Cancella le Chiavi Private selezionate">Cancella le Chiavi
-                </button>
+            <div style="float:left">
+                <button class="btn btn-secondary" id="archived-select-all">Seleziona tutto</button>
+                <button class="btn btn-secondary" id="archived-select-none">Selezionare Nessuno</button>
+            </div>
+
+            <div style="float:right">
+                <button class="btn btn-secondary pop" id="archived-sweep" title="Pulisci le Chiavi" data-content="Sposta i bitcoin eventualmente presenti nelle chiavi selezionate a un differente indirizzo bitcoin.">Pulisci le Chiavi</button>
+                <button class="btn btn-danger pop" id="archived-delete" title="Cancella le Chiavi" data-content="Cancella le Chiavi Private selezionate">Cancella le Chiavi</button>
             </div>
         </div>
 
@@ -1028,8 +1050,8 @@
                     <th class="hidden-phone">Inoltra A</th>
                     <th>Scade In</th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
             <button class="btn btn-success pull-right" id="shared-address" style="margin:5px">Nuovo indirizzo condiviso</button>
         </div>
@@ -1221,7 +1243,9 @@
             <li class="nav-header">Tipo delle Transazioni</li>
             <li class="active"><a href="#send-quick" data-toggle="tab"><i class="icon-time"></i> Invio Veloce</a></li>
             <li><a href="#send-custom" data-toggle="tab"><i class="icon-cog"></i> Personalizzata</a></li>
-            <li><a href="#send-shared" data-toggle="tab"><i class="icon-random"></i> Invia condiviso</a></li>
+            <li><a href="#shared-coin" data-toggle="tab"><i class="icon-random"></i> Moneta comune</a></li>
+            <li><a href="#send-shared" data-toggle="tab"><i class="icon-random"></i> Condiviso Invia</a></li>
+
             <li class="hidden"><a href="#send-email" data-toggle="tab"><i class="icon-lock"></i> Deposito di Garanzia</a></li>
 
             <li class="nav-header">Inviata per mezzo</li>
@@ -1230,6 +1254,8 @@
 
             <li class="nav-header">Giochi</li>
             <li><a href="#send-satoshi-dice" data-toggle="tab"><i class="icon-dice" style="background-image:url('Resources/dice.png');background-position: 0px;width:16px;height:16px;"></i> Satoshi Dice</a></li>
+
+            
 
             <li class="divider"></li>
             <li class="nav-header">Strumenti</li>
@@ -1259,7 +1285,7 @@
                     <label class="control-label pop" title="All'Indirizzo" data-content="Questo è l'indirizzo Bitcoin del destinatario.">A:</label>
 
                     <div class="controls">
-                        <span class="qrcodeicon" /><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
+                        <span class="qrcodeicon"><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
 
                         <p class="help-block">Inserisci l'indirizzo Bitcoin del destinatario</p>
                     </div>
@@ -1387,6 +1413,81 @@
     </div>
 </div>
 
+<div class="tab-pane" id="shared-coin">
+    <div class="well">
+        <a style="float:right;" href="https://blockchain.info/r?url=https%3A%2F%2Fsharedcoin.com" target="blank"><img src="Resources/info.png"></a>
+
+        <h4 class="page-header">Moneta comune<br/><small>Moneta Trustless miscelazione utilizzando join moneta e analisi macchia</small></h4>
+
+        <div class="form-horizontal">
+            <div class="controls">
+                <img src="Resources/sharedcoin_logo_circle.png" style="padding-bottom:25px">
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop" title="Dall'Indirizzo" data-content="Se serve puoi scegliere di inviare le monete da uno specifico indirizzo nel tuo portafoglio.">Da:</label>
+
+                <div class="controls">
+                    <select name="from" multiple="multiple"></select>
+                </div>
+            </div>
+
+            <div class="recipient-container">
+                <div class="recipient">
+                    <div class="control-group">
+                        <label class="control-label pop" title="All'Indirizzo" data-content="Questo è l'indirizzo Bitcoin del destinatario.">A:</label>
+
+                        <div class="controls">
+                            <span class="qrcodeicon" /><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label pop">Importo:</label>
+
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-value" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop">Ripetizioni:</label>
+
+                <div class="controls">
+                    <select name="repetitions"><option value="0">Caricamento in corso</option></select>
+                    <p class="help-block">Un più alto numero di ripetizioni rende l&#39;operazione più difficile rintracciare e migliora privacy.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="send btn btn-primary pop" title="Rivedi il Pagamento" data-content="Clicca Qui per rivedere il pagamento. Potrai confermareo cancellare la transazione.">Rivedi il Pagamento</button>
+
+                <p class="help-block send-options" style="padding-top:10px">
+                    <b>Massima Invia Valore:</b> <span></span><br />
+                    <b>Invia il valore minimo:</b> <span></span><br />
+                    <b>Fee per cento Ripetizione:</b> <span></span>%</br />
+                    <b>Costo minimo per ripetizione:</b> <span></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <h4 style="margin-bottom: 5px">Qualcosa è andato storto?</h4>
+
+        <p>
+            Quando si invia una transazione moneta comune un certo numero di indirizzi intermedi sono utilizzati. Semmai interupts il processo o un errore impedisce l&#39;operazione di completare le monete possono essere lasciati in un indirizzo intermedio. Fare clic sul bottone qui sotto per reclamare eventuali monete lasciate in indirizzi intermedi, questo processo può richiedere diversi minuti per essere completato.
+        </p>
+
+        <p>
+            <button class="btn" id="sharedcoin-recover">Recuperare indirizzi intermedi</button>
+        </p>
+    </div>
+</div>
+
 <div class="tab-pane" id="send-shared">
     <div class="well">
         <a style="float:right;" href="https://blockchain.info/wallet/send-shared" target="blank"><img src="Resources/info.png"></a>
@@ -1400,18 +1501,18 @@
                         <label class="control-label pop" title="All'Indirizzo" data-content="Questo è l'indirizzo Bitcoin del destinatario.">A:</label>
 
                         <div class="controls">
-                            <span class="qrcodeicon" /><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
+                            <span class="qrcodeicon"><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
 
                             <p class="help-block">Inserisci l'indirizzo Bitcoin del destinatario</p>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label pop" title="Amount" data-content="The Amount in Bticoins to Send">Amount:</label>
+                        <label class="control-label pop">Importo:</label>
 
                         <div class="controls">
                             <div class="input-prepend input-append">
-                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" name="send-value"/><span
+                                <span class="add-on btc-symbol"></span><input class="span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" class="send-value" name="send-value"/><span
                                     class="add-on send-value-usd">$0</span>
                             </div>
 
@@ -1455,7 +1556,7 @@
 
             <div class="controls recipient-container">
                 <div class="recipient" style="margin-bottom:5px">
-                    <span class="qrcodeicon" /><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
+                    <span class="qrcodeicon"><input placeholder="Indirizzo Bitcoin" name="send-to-address" type="text"/><span></span></span>
 
                     <div class="input-prepend input-append">
                         <span class="add-on btc-symbol"></span><input class="send-value span2" name="send-value" style="width:90px;" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
@@ -1480,8 +1581,8 @@
             <label class="control-label pop" title="Commissione dei Minatori" data-content="Questa commissione va ai minatori di bitcoin e può aiutarti a far processare la tua transazione più in fretta.">Commissione dei Minatori:</label>
 
             <div class="controls">
-                <div class="input-prepend" style="width:220px">
-                    <span class="add-on btc-symbol"></span><input class="span2" placeholder="0.0" name="fees" style="min-width:55px;width:55px" type="text"/>
+                <div class="input-prepend input-append" style="width:220px">
+                    <span class="add-on btc-symbol"></span><input class="span2" name="fees" placeholder="0.0" type="text" style="width:90px;"/><span class="add-on send-value-usd">$0</span>
                 </div>
             </div>
         </div>
@@ -1513,7 +1614,7 @@
     <div class="tab-pane" id="send-satoshi-dice" data-name="satoshidice">
         <div class="well">
             <h4 class="page-header">Scommetti con SatoshiDICE<br/>
-                <small><a href="https://blockchain.info/r?url=http://SatoshiDice.com" target="new">SatoshiDICE</a> questo è il gioco di scommesse bitcoin più popolare che ci sia. Vinci fino a 64.000x la tua scommessa, all'instante. Tutte le estrazioni sono verificabili usando la blockchain.</small>
+                <small><a href="https://blockchain.info/r?url=http://satoshidice.com" target="new">SatoshiDICE</a> questo è il gioco di scommesse bitcoin più popolare che ci sia. Vinci fino a 64.000x la tua scommessa, all'instante. Tutte le estrazioni sono verificabili usando la blockchain.</small>
             </h4>
 
             <div class="form-horizontal">
@@ -1634,19 +1735,6 @@
             </div>
 
             <div class="page-header">
-                <h3>Portafoglio Mentale</h3>
-
-                <p>Un Portafoglio Mentale è una chiave privata derivata da una frase-chiave memorabile. E' possibile memorizzare questa frase chiave per riavere i fondi associati a questo indirrizzo pur senza disporre di un salvataggio del portafoglio.</p>
-
-                <p>The minimum pass-phrase length is 15 characters. It is highly recommended you still keep regular wallet backups even with the pass-phrase memorized.</p>
-
-                <div class="form-inline">
-                    <input placeholder="pass-phrase" id="import-brain-wallet" type="text"/>
-                    <button class="btn btn-primary" style="min-width:171px" id="import-brain-wallet-btn">Genera la Chiave</button>
-                </div>
-            </div>
-
-            <div class="page-header">
                 <h3>Importa Usando un Portafoglio di Carta</h3>
 
                 <p>Usa la tua Webcam per leggere un codice QR da un Portafoglio di Carta.</p>
@@ -1757,40 +1845,6 @@
             </div>
         </div>
 
-        <div id="import-second-password-modal" class="modal hide">
-            <div class="modal-header">
-                <h3>Portafoglio seconda password</h3>
-            </div>
-            <div class="modal-body">
-                <p>Si prega di inserire la seconda password per questo portafoglio.</p>
-                <p align="center">
-                    <b>La seconda password:</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Continua</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="import-private-key-password" class="modal hide">
-            <div class="modal-header">
-                <h3>Encrypted chiave privata</h3>
-            </div>
-            <div class="modal-body">
-                <p>Una chiave privata cifrata è stato rilevato. Inserisci la parola chiave di crittografia di seguito:</p>
-                <p align="center">
-                    <b>Passphrase::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Continua</button>
-                </div>
-            </div>
-        </div>
-
         <div id="import-password-modal" class="modal hide">
             <div class="modal-header">
                 <h3>Wallet password</h3>
@@ -1830,6 +1884,7 @@
     </div>
 </div>
 </div></div>
+</div>
 </div>
 
 
@@ -1946,6 +2001,13 @@
                 <label class="control-label">Etichetta:</label>
                 <div class="controls">
                     <input name="label" placeholder="Etichetta es. Risparmi" type="text" /><p class="help-block">Un'etichetti ti aiuta a ricordare lo scopo di questo indirizzo. Può anche essere il nome di una persona o ditta.</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Rendere pubblici?</label>
+                <div class="controls">
+                    <input name="make_public" type="checkbox" /><p class="help-block">Per indirizzo predefinito etichette sono visibili soltanto a voi. Etichette pubblici sono pubblicamente visibili sul sito blockchain e possono essere visualizzate da chiunque.</p>
                 </div>
             </div>
         </div>
@@ -2177,23 +2239,51 @@
 </div>
 
 
-<div id="ask-for-shared" class="modal hide">
-    <div class="modal-header">
-        <h3>Invia condiviso?</h3>
-    </div>
-    <div class="modal-body">
-        <p>Invia questa transazione attraverso il portafoglio condiviso e ottenere un <span class="bonus-percent"></span>% di bonus (<span class="bonus-value"></span> verrà rispedito all&#39;indirizzo di invio). La transazione verrà addebitato un ritardo di circa <span class="delay"></span>.</p>
 
-        <div class="alert alert-block alert-error" style="margin: 10px;">
-            Non accettare se vi aspettate di ricevere il pagamento torna l&#39;indirizzo di invio. Operazioni condivise sono incompatibili con SatoshiDICE, BitLotto e tanti altri giochi bitcoin altri.
+    <div id="ask-for-shared" class="modal hide">
+        <div class="modal-header">
+            <h3>Invia condiviso?</h3>
+        </div>
+        <div class="modal-body">
+            <p>Invia questa transazione attraverso il portafoglio condiviso e ottenere un <span class="bonus-percent"></span>% di bonus (<span class="bonus-value"></span> verrà rispedito all&#39;indirizzo di invio). La transazione verrà addebitato un ritardo di circa <span class="delay"></span>.</p>
+
+            <div class="alert alert-block alert-error">
+                    Non accettare se vi aspettate di ricevere il pagamento torna l&#39;indirizzo di invio. Operazioni condivise sono incompatibili con SatoshiDICE, BitLotto e tanti altri giochi bitcoin altri.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-left"><input type="checkbox" id="shared-never-ask">Non me lo chiedere più.</div>
+
+            <div class="btn-group pull-right">
+                <button class="btn btn-secondary">Continua Senza</button>
+                <button class="btn btn-primary">Invia condiviso?</button>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <div class="pull-left"><input type="checkbox" id="shared-never-ask">Non me lo chiedere più.</div>
 
-        <div class="btn-group pull-right">
-            <button class="btn btn-secondary">Continua Senza</button>
-            <button class="btn btn-primary">Invia condiviso?</button>
+
+<div id="sharedcoin-modal" class="modal hide">
+    <div class="modal-header">
+        <h3>Condiviso Transaction Coin</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block alert-error">
+            Si è verificato un errore completare questa transazione moneta comune. Per ulteriori informazioni si prega di controllare la console JavaScript.
+        </div>
+
+        <div class="alert alert-block alert-warning">
+            Operazione in corso. Non chiudere questa finestra o uscire dal browser.
+        </div>
+
+        <p align="center" class="loading-indicator" style="display:none;padding:10px;">
+            <img src="Resources/loading-large.gif"><br /><br /><span class="loading-text" style="font-weight:bold;font-size:16px;"></span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-left">Send <span class="total_value" style="font-weight:bold"></span> to <span class="address" style="font-weight:bold"></span></div>
+
+            <div class="btn-group pull-right">
+            <button class="btn btn-secondary">Cancella</button>
         </div>
     </div>
 </div>
@@ -2225,7 +2315,7 @@
     </div>
     <div class="modal-body">
         <p>Questa è una transazione a bassa priorità. Si consiglia di includere una commissione di transazione di almeno 0.0005 BTC per garantirsi che i minatori la processino.</p>
-        <div class="alert alert-block alert-error" style="margin: 10px;">Se non includi una commissione potrebbe passare molto tempo prima che questa transazione venga confermata. I fondi ti saranno ritornati in circa 24 ore.</div>
+        <div class="alert alert-block alert-error">Se non includi una commissione potrebbe passare molto tempo prima che questa transazione venga confermata. I fondi ti saranno ritornati in circa 24 ore.</div>
     </div>
     <div class="modal-footer">
         <div class="btn-group pull-right">
@@ -2408,13 +2498,13 @@
         <h4 class="page-header">Blockchain.info Is Offline</h4>
 
         <p>
-           <ul>
-              <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
-              <li>Launch the application. Choose Tools -> Import Private Keys.</li>
-              <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
-              <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
-              <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
-            </ul>
+        <ul>
+            <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
+            <li>Launch the application. Choose Tools -> Import Private Keys.</li>
+            <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
+            <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
+            <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
+        </ul>
         </p>
     </div>
 
@@ -2425,6 +2515,22 @@
     </div>
 </div>
 
+<div id="import-private-key-password" class="modal hide">
+    <div class="modal-header">
+        <h3>Encrypted chiave privata</h3>
+    </div>
+    <div class="modal-body">
+        <p>Una chiave privata cifrata è stato rilevato. Inserisci la parola chiave di crittografia di seguito:</p>
+        <p align="center">
+            <b>Passphrase::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary">Continua</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

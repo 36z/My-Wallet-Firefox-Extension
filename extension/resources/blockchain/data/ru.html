@@ -23,6 +23,8 @@
     <script type="text/javascript" src="Resources/wallet/blockchainapi.js?"></script>
     <script type="text/javascript" src="Resources/wallet/wallet.js?"></script>
 
+    
+
     <script type="text/javascript" src="Resources/wallet/firefox.js?"></script>
     
     
@@ -94,7 +96,7 @@
 </div>
 
 <div id="main-notices-container" style="z-index:1; position:absolute; right:0px; margin:20px; width:auto; min-width:280px; overflow:visible; height:0px;">
-    <span id="notices" style="max-width: 600px; width:100%;"></span>
+    <span id="notices" style="max-width:600px;width:auto;"></span>
 </div>
 
 <div style="width:100%; float:left; clear:both"></div>
@@ -128,7 +130,9 @@
             <li class="nav-header">Информация об учетной записи</li>
             <li class="active"><a href="#account-information" data-toggle="tab"><i class="icon-user"></i> Личный</a></li>
             <li><a href="#account-general" data-toggle="tab"><i class="icon-wrench"></i> Общее</a></li>
+            <li><a href="#account-display" data-toggle="tab"><i class="icon-eye-open"></i> Отображать</a></li>
             <li><a href="#account-notifications" data-toggle="tab"><i class="icon-bell"></i> Уведомления</a></li>
+
             <li class="divider"></li>
             <li><a href="#account-passwords" data-toggle="tab"><i class="icon-tasks"></i> Пароли</a></li>
             <li><a href="#account-security" data-toggle="tab"><i class="icon-lock"></i> Безопасность</a></li>
@@ -254,35 +258,11 @@
 <div class="tab-pane" id="account-general">
 
     <div class="page-header">
-        <h3>Язык</h3>
-
-        <p>Установите нужный язык ниже</p>
-
-        <select id="language_select"></select>
-    </div>
-
-    <div class="page-header">
-        <h3>Местная валюта</h3>
-
-        <p>Вы можете быстро переключаться между биткойнами и местной валютой, нажав на свой баланс в правом верхнем углу.</p>
-
-        <select id="local_currency"></select>
-    </div>
-
-    <div class="page-header">
         <h3>Ручка Bitcoin ссылки</h3>
 
         <p>Хотели бы Вы, чтобы установить blockchain.info по умолчанию обработчик ссылок Bitcoin? Bitcoin ссылки (URI), которые используются для автоматического ввода адреса получателя и отправить Bitcoin значение при нажатии.</p>
 
         <button class="btn btn-secondary" id="register-uri-handler">Регистрация обработчика URI</button>
-    </div>
-
-    <div class="page-header">
-        <h3>Bitcoin дисплей</h3>
-
-        <p>Регулировка точности вы предпочитаете Bitcoin значений, которые отображаются дюйма</p>
-
-        <select id="btc_currency"></select>
     </div>
 
     <div class="page-header">
@@ -335,6 +315,50 @@
         </p>
     </div>
 </div>
+
+
+<div class="tab-pane" id="account-display">
+
+    <div class="page-header">
+        <h3>Язык</h3>
+
+        <p>Установите нужный язык ниже</p>
+
+        <select id="language_select"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Местная валюта</h3>
+
+        <p>Вы можете быстро переключаться между биткойнами и местной валютой, нажав на свой баланс в правом верхнем углу.</p>
+
+        <select id="local_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Bitcoin дисплей</h3>
+
+        <p>Регулировка точности вы предпочитаете Bitcoin значений, которые отображаются дюйма</p>
+
+        <select id="btc_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Сделки на страницу</h3>
+
+        <p>Установить количество сделок отображаемых на странице</p>
+
+        <p>
+            <select id="transactions_per_page">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </p>
+    </div>
+</div>
+
 
 <div class="tab-pane" id="account-notifications">
     <div class="page-header">
@@ -885,9 +909,7 @@
                         <div class="tab-pane active" style="text-align:right" id="deposit-us">
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Депозит Bitstamp</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fcashintocoins.com%3Fcode%3Dblockchain%26address%3D" id="cash-into-coins" target="blank">Cash Into Coins</a>
 
                             
                                 
@@ -899,9 +921,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Депозит Bitstamp</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Кракен Депозит</a>
 
                             
                                 
@@ -912,9 +932,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Депозит Bitstamp</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Кракен Депозит</a>
                         </div>
 
                         <div class="tab-pane" id="deposit-other">
@@ -922,6 +940,8 @@
                         </div>
                     </div>
                 </div>
+            
+
             
 
             <div class="page-header" id="home-account-container">
@@ -933,7 +953,6 @@
                     <button class="btn" id="my-account-btn">Настройки кошелька</button>
                 </p>
             </div>
-
 
             <div id="home-backup-container">
                 <h3>Резервное копирование</h3>
@@ -969,8 +988,8 @@
                     <th>Баланс</th>
                     <th></th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
 
             <button class="btn btn-success pop pull-right" id="new-addr" style="margin:5px" title="Новый адрес" data-content="Щелкните здесь, чтобы создать новый адрес Bitcoin. Вы можете начать получать биткойны на этот адрес немедленно">Новый адрес</button>
@@ -996,7 +1015,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                <th><input type="checkbox" id="enable_archived_checkbox"></th>
+                <th></th>
                 <th>Bitcoin адрес</th>
                 <th></th>
                 <th></th>
@@ -1004,11 +1023,14 @@
                 <tbody></tbody>
             </table>
 
-            <div class="pull-right btn-group">
-                <button class="btn btn-secondary pop" id="archived-sweep" title="Опустошить ключи" data-content="Перенести все биткойны с выбранного ключа на другой адрес Bitcoin.">Опустошить ключи
-                </button>
-                <button class="btn btn-danger pop" id="archived-delete" title="Удалить ключи" data-content="Удалить выбранные закрытые ключи.">Удалить ключи
-                </button>
+            <div style="float:left">
+                <button class="btn btn-secondary" id="archived-select-all">Выбрать все</button>
+                <button class="btn btn-secondary" id="archived-select-none">Выберите None</button>
+            </div>
+
+            <div style="float:right">
+                <button class="btn btn-secondary pop" id="archived-sweep" title="Опустошить ключи" data-content="Перенести все биткойны с выбранного ключа на другой адрес Bitcoin.">Опустошить ключи</button>
+                <button class="btn btn-danger pop" id="archived-delete" title="Удалить ключи" data-content="Удалить выбранные закрытые ключи.">Удалить ключи</button>
             </div>
         </div>
 
@@ -1028,8 +1050,8 @@
                     <th class="hidden-phone">Направить в</th>
                     <th>Истекает через</th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
             <button class="btn btn-success pull-right" id="shared-address" style="margin:5px">Новый общей адресной</button>
         </div>
@@ -1221,7 +1243,9 @@
             <li class="nav-header">Тип транзакции</li>
             <li class="active"><a href="#send-quick" data-toggle="tab"><i class="icon-time"></i> Быстро отправить</a></li>
             <li><a href="#send-custom" data-toggle="tab"><i class="icon-cog"></i> Пользовательская</a></li>
+            <li><a href="#shared-coin" data-toggle="tab"><i class="icon-random"></i> Общий монет</a></li>
             <li><a href="#send-shared" data-toggle="tab"><i class="icon-random"></i> Общий Отправить</a></li>
+
             <li class="hidden"><a href="#send-email" data-toggle="tab"><i class="icon-lock"></i> Эскроу</a></li>
 
             <li class="nav-header">Отправить через</li>
@@ -1230,6 +1254,8 @@
 
             <li class="nav-header">Игры</li>
             <li><a href="#send-satoshi-dice" data-toggle="tab"><i class="icon-dice" style="background-image:url('Resources/dice.png');background-position: 0px;width:16px;height:16px;"></i> Satoshi Dice</a></li>
+
+            
 
             <li class="divider"></li>
             <li class="nav-header">Инструменты</li>
@@ -1259,7 +1285,7 @@
                     <label class="control-label pop" title="Адрес получателя" data-content="Это bitcoin-адрес получателя.">Кому:</label>
 
                     <div class="controls">
-                        <span class="qrcodeicon" /><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
+                        <span class="qrcodeicon"><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
 
                         <p class="help-block">Введите bitcoin-адрес получателя</p>
                     </div>
@@ -1387,6 +1413,81 @@
     </div>
 </div>
 
+<div class="tab-pane" id="shared-coin">
+    <div class="well">
+        <a style="float:right;" href="https://blockchain.info/r?url=https%3A%2F%2Fsharedcoin.com" target="blank"><img src="Resources/info.png"></a>
+
+        <h4 class="page-header">Общий монет<br/><small>Недоверчивый монеты смешивания использованием соединения монету и испортить анализ</small></h4>
+
+        <div class="form-horizontal">
+            <div class="controls">
+                <img src="Resources/sharedcoin_logo_circle.png" style="padding-bottom:25px">
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop" title="Адрес отправителя" data-content="При необходимости вы можете отправить биткойны с определенного адреса в вашем кошельке.">От:</label>
+
+                <div class="controls">
+                    <select name="from" multiple="multiple"></select>
+                </div>
+            </div>
+
+            <div class="recipient-container">
+                <div class="recipient">
+                    <div class="control-group">
+                        <label class="control-label pop" title="Адрес получателя" data-content="Это bitcoin-адрес получателя.">Кому:</label>
+
+                        <div class="controls">
+                            <span class="qrcodeicon" /><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label pop">Количество:</label>
+
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-value" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop">Повторения:</label>
+
+                <div class="controls">
+                    <select name="repetitions"><option value="0">Загрузка</option></select>
+                    <p class="help-block">Более высокое число повторений делает сделку более трудно проследить и улучшает конфиденциальность.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="send btn btn-primary pop" title="Обзор оплаты" data-content="Нажмите, чтобы просмотреть детали оплаты. Вы сможете подтвердить или отменить операцию перед отправкой.">Обзор оплаты</button>
+
+                <p class="help-block send-options" style="padding-top:10px">
+                    <b>Максимальная передача значения:</b> <span></span><br />
+                    <b>Минимальная Передать значение:</b> <span></span><br />
+                    <b>Плата процентов Повторение:</b> <span></span>%</br />
+                    <b>Минимальная плата за Повторение:</b> <span></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <h4 style="margin-bottom: 5px">Что-то пошло не так?</h4>
+
+        <p>
+            При отправке общей сделки монеты ряд промежуточных адреса используются. Если что прерывает процесс или с ошибкой в ​​ходе сделки от завершения монеты могут быть оставлены в промежуточном адреса. Нажмите на кнопку ниже, чтобы претендовать на монетах оставили в промежуточных адресов, этот процесс может занять несколько минут, чтобы закончить.
+        </p>
+
+        <p>
+            <button class="btn" id="sharedcoin-recover">Восстановление Промежуточные адреса</button>
+        </p>
+    </div>
+</div>
+
 <div class="tab-pane" id="send-shared">
     <div class="well">
         <a style="float:right;" href="https://blockchain.info/wallet/send-shared" target="blank"><img src="Resources/info.png"></a>
@@ -1400,18 +1501,18 @@
                         <label class="control-label pop" title="Адрес получателя" data-content="Это bitcoin-адрес получателя.">Кому:</label>
 
                         <div class="controls">
-                            <span class="qrcodeicon" /><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
+                            <span class="qrcodeicon"><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
 
                             <p class="help-block">Введите bitcoin-адрес получателя</p>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label pop" title="Amount" data-content="The Amount in Bticoins to Send">Amount:</label>
+                        <label class="control-label pop">Количество:</label>
 
                         <div class="controls">
                             <div class="input-prepend input-append">
-                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" name="send-value"/><span
+                                <span class="add-on btc-symbol"></span><input class="span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" class="send-value" name="send-value"/><span
                                     class="add-on send-value-usd">$0</span>
                             </div>
 
@@ -1455,7 +1556,7 @@
 
             <div class="controls recipient-container">
                 <div class="recipient" style="margin-bottom:5px">
-                    <span class="qrcodeicon" /><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
+                    <span class="qrcodeicon"><input placeholder="Bitcoin адрес" name="send-to-address" type="text"/><span></span></span>
 
                     <div class="input-prepend input-append">
                         <span class="add-on btc-symbol"></span><input class="send-value span2" name="send-value" style="width:90px;" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
@@ -1480,8 +1581,8 @@
             <label class="control-label pop" title="Оплата шахтерам" data-content="Эта оплата будет отправлена шахтерам и может помочь вашей транзакции обрабататься быстрее">Оплата шахтерам:</label>
 
             <div class="controls">
-                <div class="input-prepend" style="width:220px">
-                    <span class="add-on btc-symbol"></span><input class="span2" placeholder="0.0" name="fees" style="min-width:55px;width:55px" type="text"/>
+                <div class="input-prepend input-append" style="width:220px">
+                    <span class="add-on btc-symbol"></span><input class="span2" name="fees" placeholder="0.0" type="text" style="width:90px;"/><span class="add-on send-value-usd">$0</span>
                 </div>
             </div>
         </div>
@@ -1513,7 +1614,7 @@
     <div class="tab-pane" id="send-satoshi-dice" data-name="satoshidice">
         <div class="well">
             <h4 class="page-header">Сделать ставку с SatoshiDICE<br/>
-                <small><a href="https://blockchain.info/r?url=http://SatoshiDice.com" target="new">SatoshiDICE</a> является самой популярной азартной игрой Bitcoin. Мгновенно выиграй сумму до 64000 раз превосходящую вашу ставку. Все ставки поддаются проверке с использованием цепочки блоков.</small>
+                <small><a href="https://blockchain.info/r?url=http://satoshidice.com" target="new">SatoshiDICE</a> является самой популярной азартной игрой Bitcoin. Мгновенно выиграй сумму до 64000 раз превосходящую вашу ставку. Все ставки поддаются проверке с использованием цепочки блоков.</small>
             </h4>
 
             <div class="form-horizontal">
@@ -1634,19 +1735,6 @@
             </div>
 
             <div class="page-header">
-                <h3>Мозг Wallet</h3>
-
-                <p>Мозг Wallet представляет собой закрытый ключ высевают с памятной фразы прохода. Можно запомнить этот пароль в целях восстановления средств по этому адресу, не нуждаясь в бумажнике резервного копирования.</p>
-
-                <p>Минимальная фразу прохода длиной 15 символов. Настоятельно рекомендуется вы до сих пор регулярно создавать резервные копии кошелек даже с идентификационной фразы запоминаются.</p>
-
-                <div class="form-inline">
-                    <input placeholder="pass-phrase" id="import-brain-wallet" type="text"/>
-                    <button class="btn btn-primary" style="min-width:171px" id="import-brain-wallet-btn">Генерация ключа</button>
-                </div>
-            </div>
-
-            <div class="page-header">
                 <h3>Импорт Использование бумаги кошелек</h3>
 
                 <p>Использовать веб-камеру для сканирования QR-код из бумаги кошелек</p>
@@ -1757,40 +1845,6 @@
             </div>
         </div>
 
-        <div id="import-second-password-modal" class="modal hide">
-            <div class="modal-header">
-                <h3>Бумажник вторым паролем</h3>
-            </div>
-            <div class="modal-body">
-                <p>Пожалуйста, введите второй пароль для этого кошелька.</p>
-                <p align="center">
-                    <b>Второй пароль:</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Продолжить</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="import-private-key-password" class="modal hide">
-            <div class="modal-header">
-                <h3>Зашифрованные закрытым ключом</h3>
-            </div>
-            <div class="modal-body">
-                <p>Зашифрованного закрытого ключа было обнаружено. Введите фразу шифрования ниже:</p>
-                <p align="center">
-                    <b>Ключевая фраза::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Продолжить</button>
-                </div>
-            </div>
-        </div>
-
         <div id="import-password-modal" class="modal hide">
             <div class="modal-header">
                 <h3>Бумажник Пароль</h3>
@@ -1830,6 +1884,7 @@
     </div>
 </div>
 </div></div>
+</div>
 </div>
 
 
@@ -1946,6 +2001,13 @@
                 <label class="control-label">Этикетка:</label>
                 <div class="controls">
                     <input name="label" placeholder="Этикетка, например 'Запас'" type="text" /><p class="help-block">Этикетка используется, чтобы помочь вам вспомнить, для чего нужен этот адрес. Это может быть имя человека или компании.</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Сделать общедоступным?</label>
+                <div class="controls">
+                    <input name="make_public" type="checkbox" /><p class="help-block">По умолчанию адрес этикетки могут видеть только Вам. Общественные этикетки публично видны на сайте blockchain и могут быть просмотрены любым.</p>
                 </div>
             </div>
         </div>
@@ -2177,23 +2239,51 @@
 </div>
 
 
-<div id="ask-for-shared" class="modal hide">
-    <div class="modal-header">
-        <h3>Отправить общего?</h3>
-    </div>
-    <div class="modal-body">
-        <p>Отправить эту сделку до конца общий кошелек и получить <span class="bonus-percent"></span>% бонус (<span class="bonus-value"></span>, будут отправлены обратно на адрес отправителя). Сделка будет нести с задержкой около <span class="delay"></span>.</p>
 
-        <div class="alert alert-block alert-error" style="margin: 10px;">
-            Не принимайте, если вы ожидаете получить оплату обратно на адрес отправителя. Общие операции, несовместимые с SatoshiDICE, BitLotto и многие другие игры Bitcoin.
+    <div id="ask-for-shared" class="modal hide">
+        <div class="modal-header">
+            <h3>Отправить общего?</h3>
+        </div>
+        <div class="modal-body">
+            <p>Отправить эту сделку до конца общий кошелек и получить <span class="bonus-percent"></span>% бонус (<span class="bonus-value"></span>, будут отправлены обратно на адрес отправителя). Сделка будет нести с задержкой около <span class="delay"></span>.</p>
+
+            <div class="alert alert-block alert-error">
+                    Не принимайте, если вы ожидаете получить оплату обратно на адрес отправителя. Общие операции, несовместимые с SatoshiDICE, BitLotto и многие другие игры Bitcoin.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-left"><input type="checkbox" id="shared-never-ask">Никогда не спрашивайте меня снова.</div>
+
+            <div class="btn-group pull-right">
+                <button class="btn btn-secondary">Продолжить без</button>
+                <button class="btn btn-primary">Отправить общего?</button>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <div class="pull-left"><input type="checkbox" id="shared-never-ask">Никогда не спрашивайте меня снова.</div>
 
-        <div class="btn-group pull-right">
-            <button class="btn btn-secondary">Продолжить без</button>
-            <button class="btn btn-primary">Отправить общего?</button>
+
+<div id="sharedcoin-modal" class="modal hide">
+    <div class="modal-header">
+        <h3>Общая монета сделки</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block alert-error">
+            Произошла ошибка завершения этой сделки общая монета. Для получения дополнительной информации пожалуйста, проверьте консоль JavaScript.
+        </div>
+
+        <div class="alert alert-block alert-warning">
+            Сделка в стадии разработки. Не закрывайте это окно или закрыть браузер.
+        </div>
+
+        <p align="center" class="loading-indicator" style="display:none;padding:10px;">
+            <img src="Resources/loading-large.gif"><br /><br /><span class="loading-text" style="font-weight:bold;font-size:16px;"></span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-left">Send <span class="total_value" style="font-weight:bold"></span> to <span class="address" style="font-weight:bold"></span></div>
+
+            <div class="btn-group pull-right">
+            <button class="btn btn-secondary">Отменить</button>
         </div>
     </div>
 </div>
@@ -2225,7 +2315,7 @@
     </div>
     <div class="modal-body">
         <p>Эта транзакция имеет низкий приоритет. Рекомендуется включить оплату транзакции, по меньшей мере 0.0005 BTC, для того чтобы шахтеры захотели её обработать.</p>
-        <div class="alert alert-block alert-error" style="margin: 10px;">Если вы не включите шахтерские сборы, подтверждение этой транзакции может занять много времени. Средства будут возвращены вам примерно через 24 часа.</div>
+        <div class="alert alert-block alert-error">Если вы не включите шахтерские сборы, подтверждение этой транзакции может занять много времени. Средства будут возвращены вам примерно через 24 часа.</div>
     </div>
     <div class="modal-footer">
         <div class="btn-group pull-right">
@@ -2408,13 +2498,13 @@
         <h4 class="page-header">Blockchain.info Is Offline</h4>
 
         <p>
-           <ul>
-              <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
-              <li>Launch the application. Choose Tools -> Import Private Keys.</li>
-              <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
-              <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
-              <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
-            </ul>
+        <ul>
+            <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
+            <li>Launch the application. Choose Tools -> Import Private Keys.</li>
+            <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
+            <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
+            <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
+        </ul>
         </p>
     </div>
 
@@ -2425,6 +2515,22 @@
     </div>
 </div>
 
+<div id="import-private-key-password" class="modal hide">
+    <div class="modal-header">
+        <h3>Зашифрованные закрытым ключом</h3>
+    </div>
+    <div class="modal-body">
+        <p>Зашифрованного закрытого ключа было обнаружено. Введите фразу шифрования ниже:</p>
+        <p align="center">
+            <b>Ключевая фраза::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary">Продолжить</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

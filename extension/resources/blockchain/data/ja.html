@@ -23,6 +23,8 @@
     <script type="text/javascript" src="Resources/wallet/blockchainapi.js?"></script>
     <script type="text/javascript" src="Resources/wallet/wallet.js?"></script>
 
+    
+
     <script type="text/javascript" src="Resources/wallet/firefox.js?"></script>
     
     
@@ -94,7 +96,7 @@
 </div>
 
 <div id="main-notices-container" style="z-index:1; position:absolute; right:0px; margin:20px; width:auto; min-width:280px; overflow:visible; height:0px;">
-    <span id="notices" style="max-width: 600px; width:100%;"></span>
+    <span id="notices" style="max-width:600px;width:auto;"></span>
 </div>
 
 <div style="width:100%; float:left; clear:both"></div>
@@ -128,7 +130,9 @@
             <li class="nav-header">Account Information</li>
             <li class="active"><a href="#account-information" data-toggle="tab"><i class="icon-user"></i> Personal</a></li>
             <li><a href="#account-general" data-toggle="tab"><i class="icon-wrench"></i> General</a></li>
+            <li><a href="#account-display" data-toggle="tab"><i class="icon-eye-open"></i> Display</a></li>
             <li><a href="#account-notifications" data-toggle="tab"><i class="icon-bell"></i> Notifications</a></li>
+
             <li class="divider"></li>
             <li><a href="#account-passwords" data-toggle="tab"><i class="icon-tasks"></i> Passwords</a></li>
             <li><a href="#account-security" data-toggle="tab"><i class="icon-lock"></i> Security</a></li>
@@ -254,35 +258,11 @@
 <div class="tab-pane" id="account-general">
 
     <div class="page-header">
-        <h3>Language</h3>
-
-        <p>以下でご希望の言語を設定してください</p>
-
-        <select id="language_select"></select>
-    </div>
-
-    <div class="page-header">
-        <h3>Local Currency</h3>
-
-        <p>右上の残高をクリックすることでビットコインおよび現地通貨間の表示を素早く切り替えることができます。</p>
-
-        <select id="local_currency"></select>
-    </div>
-
-    <div class="page-header">
         <h3>Handle Bitcoin Links</h3>
 
         <p>Would you like to set blockchain.info as the default handler of bitcoin links? Bitcoin links (URIs) are used to automatically enter a recipient bitcoin address and send value when clicked.</p>
 
         <button class="btn btn-secondary" id="register-uri-handler">Register URI Handler</button>
-    </div>
-
-    <div class="page-header">
-        <h3>Bitcoin Display</h3>
-
-        <p>Adjust the precision you would prefer bitcoin values to be displayed in.</p>
-
-        <select id="btc_currency"></select>
     </div>
 
     <div class="page-header">
@@ -335,6 +315,50 @@
         </p>
     </div>
 </div>
+
+
+<div class="tab-pane" id="account-display">
+
+    <div class="page-header">
+        <h3>Language</h3>
+
+        <p>以下でご希望の言語を設定してください</p>
+
+        <select id="language_select"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Local Currency</h3>
+
+        <p>右上の残高をクリックすることでビットコインおよび現地通貨間の表示を素早く切り替えることができます。</p>
+
+        <select id="local_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Bitcoin Display</h3>
+
+        <p>Adjust the precision you would prefer bitcoin values to be displayed in.</p>
+
+        <select id="btc_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Transactions Per Page</h3>
+
+        <p>Set the number of transactions displayed per page</p>
+
+        <p>
+            <select id="transactions_per_page">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </p>
+    </div>
+</div>
+
 
 <div class="tab-pane" id="account-notifications">
     <div class="page-header">
@@ -885,9 +909,7 @@
                         <div class="tab-pane active" style="text-align:right" id="deposit-us">
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fcashintocoins.com%3Fcode%3Dblockchain%26address%3D" id="cash-into-coins" target="blank">Cash Into Coins</a>
 
                             
                                 
@@ -899,9 +921,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposit</a>
 
                             
                                 
@@ -912,9 +932,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposit</a>
                         </div>
 
                         <div class="tab-pane" id="deposit-other">
@@ -922,6 +940,8 @@
                         </div>
                     </div>
                 </div>
+            
+
             
 
             <div class="page-header" id="home-account-container">
@@ -933,7 +953,6 @@
                     <button class="btn" id="my-account-btn">アカウント設定</button>
                 </p>
             </div>
-
 
             <div id="home-backup-container">
                 <h3>Backup</h3>
@@ -969,8 +988,8 @@
                     <th>残高</th>
                     <th></th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
 
             <button class="btn btn-success pop pull-right" id="new-addr" style="margin:5px" title="新しいアドレス" data-content="新しいビットコインアドレスを生成するためにはここをクリックしてください。お客様はすぐにこのアドレスでビットコインの受け取りができます">新しいアドレス</button>
@@ -996,7 +1015,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                <th><input type="checkbox" id="enable_archived_checkbox"></th>
+                <th></th>
                 <th>ビットコインアドレス</th>
                 <th></th>
                 <th></th>
@@ -1004,11 +1023,14 @@
                 <tbody></tbody>
             </table>
 
-            <div class="pull-right btn-group">
-                <button class="btn btn-secondary pop" id="archived-sweep" title="スウィープキー" data-content="選択したキー内のビットコインを他のビットコインアドレスに移動します。">スウィープキー
-                </button>
-                <button class="btn btn-danger pop" id="archived-delete" title="Delete Keys" data-content="Delete the selected private keys.">Delete Keys
-                </button>
+            <div style="float:left">
+                <button class="btn btn-secondary" id="archived-select-all">Select All</button>
+                <button class="btn btn-secondary" id="archived-select-none">Select None</button>
+            </div>
+
+            <div style="float:right">
+                <button class="btn btn-secondary pop" id="archived-sweep" title="スウィープキー" data-content="選択したキー内のビットコインを他のビットコインアドレスに移動します。">スウィープキー</button>
+                <button class="btn btn-danger pop" id="archived-delete" title="Delete Keys" data-content="Delete the selected private keys.">Delete Keys</button>
             </div>
         </div>
 
@@ -1028,8 +1050,8 @@
                     <th class="hidden-phone">転送先</th>
                     <th>残り有効期限時間</th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
             <button class="btn btn-success pull-right" id="shared-address" style="margin:5px">New Shared Address</button>
         </div>
@@ -1221,7 +1243,9 @@
             <li class="nav-header">取引種別</li>
             <li class="active"><a href="#send-quick" data-toggle="tab"><i class="icon-time"></i> クイック送金</a></li>
             <li><a href="#send-custom" data-toggle="tab"><i class="icon-cog"></i> Custom</a></li>
+            <li><a href="#shared-coin" data-toggle="tab"><i class="icon-random"></i> Shared Coin</a></li>
             <li><a href="#send-shared" data-toggle="tab"><i class="icon-random"></i> Shared Send</a></li>
+
             <li class="hidden"><a href="#send-email" data-toggle="tab"><i class="icon-lock"></i> Escrow</a></li>
 
             <li class="nav-header">Send Via</li>
@@ -1230,6 +1254,8 @@
 
             <li class="nav-header">Games</li>
             <li><a href="#send-satoshi-dice" data-toggle="tab"><i class="icon-dice" style="background-image:url('Resources/dice.png');background-position: 0px;width:16px;height:16px;"></i> Satoshi Dice</a></li>
+
+            
 
             <li class="divider"></li>
             <li class="nav-header">Tools</li>
@@ -1259,7 +1285,7 @@
                     <label class="control-label pop" title="宛先アドレス" data-content="これは受信者のビットコインアドレスです。">宛先：</label>
 
                     <div class="controls">
-                        <span class="qrcodeicon" /><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
+                        <span class="qrcodeicon"><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
 
                         <p class="help-block">受信者のビットコインアドレスを入力してください</p>
                     </div>
@@ -1387,6 +1413,81 @@
     </div>
 </div>
 
+<div class="tab-pane" id="shared-coin">
+    <div class="well">
+        <a style="float:right;" href="https://blockchain.info/r?url=https%3A%2F%2Fsharedcoin.com" target="blank"><img src="Resources/info.png"></a>
+
+        <h4 class="page-header">Shared Coin<br/><small>Trustless coin mixing using coin join and taint analysis</small></h4>
+
+        <div class="form-horizontal">
+            <div class="controls">
+                <img src="Resources/sharedcoin_logo_circle.png" style="padding-bottom:25px">
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop" title="差出人アドレス" data-content="必要な場合は、お客様の財布で特定された住所からは、コインを送信することを選択できます。">差出人：</label>
+
+                <div class="controls">
+                    <select name="from" multiple="multiple"></select>
+                </div>
+            </div>
+
+            <div class="recipient-container">
+                <div class="recipient">
+                    <div class="control-group">
+                        <label class="control-label pop" title="宛先アドレス" data-content="これは受信者のビットコインアドレスです。">宛先：</label>
+
+                        <div class="controls">
+                            <span class="qrcodeicon" /><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label pop">金額:</label>
+
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-value" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop">Repetitions:</label>
+
+                <div class="controls">
+                    <select name="repetitions"><option value="0">ロード中</option></select>
+                    <p class="help-block">A higher number of repetitions makes the transaction more difficult to trace and improves privacy.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="send btn btn-primary pop" title="支払い確認" data-content="Click Here to review payment. You will be able to confirm or cancel the transaction.">支払い確認</button>
+
+                <p class="help-block send-options" style="padding-top:10px">
+                    <b>Maximum Send Value:</b> <span></span><br />
+                    <b>Minimum Send Value:</b> <span></span><br />
+                    <b>Fee Percent Per Repetition:</b> <span></span>%</br />
+                    <b>Minimum Fee Per Repetition:</b> <span></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <h4 style="margin-bottom: 5px">Something went wrong?</h4>
+
+        <p>
+            When sending a shared coin transaction a number of intermediate addresses are used. If anything interupts the process or an error prevents the transaction from completing the coins may be left in an intermediate address. Click the button below to claim any coins left in intermediate addresses, this process can take several minutes to complete.
+        </p>
+
+        <p>
+            <button class="btn" id="sharedcoin-recover">Recover Intermediate Addresses</button>
+        </p>
+    </div>
+</div>
+
 <div class="tab-pane" id="send-shared">
     <div class="well">
         <a style="float:right;" href="https://blockchain.info/wallet/send-shared" target="blank"><img src="Resources/info.png"></a>
@@ -1400,18 +1501,18 @@
                         <label class="control-label pop" title="宛先アドレス" data-content="これは受信者のビットコインアドレスです。">宛先：</label>
 
                         <div class="controls">
-                            <span class="qrcodeicon" /><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
+                            <span class="qrcodeicon"><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
 
                             <p class="help-block">受信者のビットコインアドレスを入力してください</p>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label pop" title="Amount" data-content="The Amount in Bticoins to Send">Amount:</label>
+                        <label class="control-label pop">金額:</label>
 
                         <div class="controls">
                             <div class="input-prepend input-append">
-                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" name="send-value"/><span
+                                <span class="add-on btc-symbol"></span><input class="span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" class="send-value" name="send-value"/><span
                                     class="add-on send-value-usd">$0</span>
                             </div>
 
@@ -1455,7 +1556,7 @@
 
             <div class="controls recipient-container">
                 <div class="recipient" style="margin-bottom:5px">
-                    <span class="qrcodeicon" /><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
+                    <span class="qrcodeicon"><input placeholder="ビットコインアドレス" name="send-to-address" type="text"/><span></span></span>
 
                     <div class="input-prepend input-append">
                         <span class="add-on btc-symbol"></span><input class="send-value span2" name="send-value" style="width:90px;" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
@@ -1480,8 +1581,8 @@
             <label class="control-label pop" title="採掘手数料" data-content="この手数料はビットコイン採掘者に送信され、お客様の取引をより早く処理してくれるのに役立ちます">採掘手数料:</label>
 
             <div class="controls">
-                <div class="input-prepend" style="width:220px">
-                    <span class="add-on btc-symbol"></span><input class="span2" placeholder="0.0" name="fees" style="min-width:55px;width:55px" type="text"/>
+                <div class="input-prepend input-append" style="width:220px">
+                    <span class="add-on btc-symbol"></span><input class="span2" name="fees" placeholder="0.0" type="text" style="width:90px;"/><span class="add-on send-value-usd">$0</span>
                 </div>
             </div>
         </div>
@@ -1513,7 +1614,7 @@
     <div class="tab-pane" id="send-satoshi-dice" data-name="satoshidice">
         <div class="well">
             <h4 class="page-header">SatoshiDICEカジノゲームに参加する<br/>
-                <small><a href="https://blockchain.info/r?url=http://SatoshiDice.com" target="new">SatoshiDICE</a>は最も人気のあるビットコインカジノゲームです。賭け金の最大64000倍を瞬時に当選。すべてのロールはblockchainを使用して認証されています。</small>
+                <small><a href="https://blockchain.info/r?url=http://satoshidice.com" target="new">SatoshiDICE</a>は最も人気のあるビットコインカジノゲームです。賭け金の最大64000倍を瞬時に当選。すべてのロールはblockchainを使用して認証されています。</small>
             </h4>
 
             <div class="form-horizontal">
@@ -1634,19 +1735,6 @@
             </div>
 
             <div class="page-header">
-                <h3>ブレインウォレット</h3>
-
-                <p>ブレインウォレットは、記憶用パスフレーズから派生したプライベートキーです。このアドレスの資金をウォレットのバックアップを必要とすることなく復元するために、このパスワードを利用することができます。</p>
-
-                <p>The minimum pass-phrase length is 15 characters. It is highly recommended you still keep regular wallet backups even with the pass-phrase memorized.</p>
-
-                <div class="form-inline">
-                    <input placeholder="pass-phrase" id="import-brain-wallet" type="text"/>
-                    <button class="btn btn-primary" style="min-width:171px" id="import-brain-wallet-btn">キーを生成する</button>
-                </div>
-            </div>
-
-            <div class="page-header">
                 <h3>Import Using Paper Wallet</h3>
 
                 <p>紙ウォレットからQRコードをスキャンするには、ウェブカメラを使用してください</p>
@@ -1757,40 +1845,6 @@
             </div>
         </div>
 
-        <div id="import-second-password-modal" class="modal hide">
-            <div class="modal-header">
-                <h3>Wallet Second Password</h3>
-            </div>
-            <div class="modal-body">
-                <p>Please enter the second password for this wallet.</p>
-                <p align="center">
-                    <b>Second password:</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">続行</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="import-private-key-password" class="modal hide">
-            <div class="modal-header">
-                <h3>Encrypted Private Key</h3>
-            </div>
-            <div class="modal-body">
-                <p>An encrypted private key has been detected. Please enter the encryption passphrase below:</p>
-                <p align="center">
-                    <b>Passphrase::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">続行</button>
-                </div>
-            </div>
-        </div>
-
         <div id="import-password-modal" class="modal hide">
             <div class="modal-header">
                 <h3>Wallet Password</h3>
@@ -1830,6 +1884,7 @@
     </div>
 </div>
 </div></div>
+</div>
 </div>
 
 
@@ -1946,6 +2001,13 @@
                 <label class="control-label">ラベル：</label>
                 <div class="controls">
                     <input name="label" placeholder="ラベルの例：貯蓄" type="text" /><p class="help-block">ラベルはこのアドレスを判別しやすくするために使用されます。これは、個人名や会社名などにすることができます。</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Make Public?</label>
+                <div class="controls">
+                    <input name="make_public" type="checkbox" /><p class="help-block">By Default address labels are visible to you only. Public labels are publically visible on the blockchain website and can be viewed by anyone.</p>
                 </div>
             </div>
         </div>
@@ -2177,23 +2239,51 @@
 </div>
 
 
-<div id="ask-for-shared" class="modal hide">
-    <div class="modal-header">
-        <h3>Send Shared?</h3>
-    </div>
-    <div class="modal-body">
-        <p>Send this transaction through the shared wallet and get a<span class="bonus-percent"></span>% bonus</b> (<span class="bonus-value"></span> will be sent back to the sending address). The transaction will incur a delay of approximately <span class="delay"></span>.</p>
 
-        <div class="alert alert-block alert-error" style="margin: 10px;">
-            Do not accept if you expect to receive payment back to the sending address. Shared transactions are incompatible with SatoshiDICE, BitLotto and many other bitcoin games.
+    <div id="ask-for-shared" class="modal hide">
+        <div class="modal-header">
+            <h3>Send Shared?</h3>
+        </div>
+        <div class="modal-body">
+            <p>Send this transaction through the shared wallet and get a<span class="bonus-percent"></span>% bonus</b> (<span class="bonus-value"></span> will be sent back to the sending address). The transaction will incur a delay of approximately <span class="delay"></span>.</p>
+
+            <div class="alert alert-block alert-error">
+                    Do not accept if you expect to receive payment back to the sending address. Shared transactions are incompatible with SatoshiDICE, BitLotto and many other bitcoin games.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-left"><input type="checkbox" id="shared-never-ask">二度と尋ねない。</div>
+
+            <div class="btn-group pull-right">
+                <button class="btn btn-secondary">Continue Without</button>
+                <button class="btn btn-primary">Send Shared?</button>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <div class="pull-left"><input type="checkbox" id="shared-never-ask">二度と尋ねない。</div>
 
-        <div class="btn-group pull-right">
-            <button class="btn btn-secondary">Continue Without</button>
-            <button class="btn btn-primary">Send Shared?</button>
+
+<div id="sharedcoin-modal" class="modal hide">
+    <div class="modal-header">
+        <h3>Shared Coin Transaction</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block alert-error">
+            An error occurred completing this shared coin transaction. For further information please check the javascript console.
+        </div>
+
+        <div class="alert alert-block alert-warning">
+            Transaction in progress. Do not close this window or exit your browser.
+        </div>
+
+        <p align="center" class="loading-indicator" style="display:none;padding:10px;">
+            <img src="Resources/loading-large.gif"><br /><br /><span class="loading-text" style="font-weight:bold;font-size:16px;"></span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-left">Send <span class="total_value" style="font-weight:bold"></span> to <span class="address" style="font-weight:bold"></span></div>
+
+            <div class="btn-group pull-right">
+            <button class="btn btn-secondary">Cancel</button>
         </div>
     </div>
 </div>
@@ -2225,7 +2315,7 @@
     </div>
     <div class="modal-body">
         <p>この取引は優先順位が低いです。採掘者に確実に処理してもらうためにも、少なくとも0.0005 BTCの取引手数料を含めることをお勧めします。</p>
-        <div class="alert alert-block alert-error" style="margin: 10px;">お客様がこの取引に手数料を含めない場合、認証を受けるのに長い時間がかかることがあります。すべての資金は、約24時間以内にお客様に返還されます。</div>
+        <div class="alert alert-block alert-error">お客様がこの取引に手数料を含めない場合、認証を受けるのに長い時間がかかることがあります。すべての資金は、約24時間以内にお客様に返還されます。</div>
     </div>
     <div class="modal-footer">
         <div class="btn-group pull-right">
@@ -2408,13 +2498,13 @@
         <h4 class="page-header">Blockchain.info Is Offline</h4>
 
         <p>
-           <ul>
-              <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
-              <li>Launch the application. Choose Tools -> Import Private Keys.</li>
-              <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
-              <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
-              <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
-            </ul>
+        <ul>
+            <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
+            <li>Launch the application. Choose Tools -> Import Private Keys.</li>
+            <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
+            <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
+            <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
+        </ul>
         </p>
     </div>
 
@@ -2425,6 +2515,22 @@
     </div>
 </div>
 
+<div id="import-private-key-password" class="modal hide">
+    <div class="modal-header">
+        <h3>Encrypted Private Key</h3>
+    </div>
+    <div class="modal-body">
+        <p>An encrypted private key has been detected. Please enter the encryption passphrase below:</p>
+        <p align="center">
+            <b>Passphrase::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary">続行</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

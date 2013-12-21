@@ -23,6 +23,8 @@
     <script type="text/javascript" src="Resources/wallet/blockchainapi.js?"></script>
     <script type="text/javascript" src="Resources/wallet/wallet.js?"></script>
 
+    
+
     <script type="text/javascript" src="Resources/wallet/firefox.js?"></script>
     
     
@@ -94,7 +96,7 @@
 </div>
 
 <div id="main-notices-container" style="z-index:1; position:absolute; right:0px; margin:20px; width:auto; min-width:280px; overflow:visible; height:0px;">
-    <span id="notices" style="max-width: 600px; width:100%;"></span>
+    <span id="notices" style="max-width:600px;width:auto;"></span>
 </div>
 
 <div style="width:100%; float:left; clear:both"></div>
@@ -128,7 +130,9 @@
             <li class="nav-header">Kontooplysninger</li>
             <li class="active"><a href="#account-information" data-toggle="tab"><i class="icon-user"></i> Personlig</a></li>
             <li><a href="#account-general" data-toggle="tab"><i class="icon-wrench"></i> Generelle</a></li>
+            <li><a href="#account-display" data-toggle="tab"><i class="icon-eye-open"></i> Display</a></li>
             <li><a href="#account-notifications" data-toggle="tab"><i class="icon-bell"></i> Meddelelser</a></li>
+
             <li class="divider"></li>
             <li><a href="#account-passwords" data-toggle="tab"><i class="icon-tasks"></i> Adgangskoder</a></li>
             <li><a href="#account-security" data-toggle="tab"><i class="icon-lock"></i> Sikkerhed</a></li>
@@ -254,35 +258,11 @@
 <div class="tab-pane" id="account-general">
 
     <div class="page-header">
-        <h3>Sprog</h3>
-
-        <p>Angiv dit foretrukne sprog nedenfor</p>
-
-        <select id="language_select"></select>
-    </div>
-
-    <div class="page-header">
-        <h3>Lokal Valuta</h3>
-
-        <p>Du kan hurtigt skifte mellem bitcoins og din lokale valuta ved at klikke på din saldo i øverste højre.</p>
-
-        <select id="local_currency"></select>
-    </div>
-
-    <div class="page-header">
         <h3>Håndtag Bitcoin Links</h3>
 
         <p>Kunne du tænke dig at indstille blockchain.info som standard handleren af ​​Bitcoin links? Bitcoin links (URI&#39;er) bruges til automatisk at angive en modtagers Bitcoin adresse og send værdi, når der klikkes.</p>
 
         <button class="btn btn-secondary" id="register-uri-handler">Registrer URI Handler</button>
-    </div>
-
-    <div class="page-header">
-        <h3>Bitcoin Display</h3>
-
-        <p>Juster præcision du foretrækker Bitcoin værdier, der skal vises i.</p>
-
-        <select id="btc_currency"></select>
     </div>
 
     <div class="page-header">
@@ -335,6 +315,50 @@
         </p>
     </div>
 </div>
+
+
+<div class="tab-pane" id="account-display">
+
+    <div class="page-header">
+        <h3>Sprog</h3>
+
+        <p>Angiv dit foretrukne sprog nedenfor</p>
+
+        <select id="language_select"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Lokal Valuta</h3>
+
+        <p>Du kan hurtigt skifte mellem bitcoins og din lokale valuta ved at klikke på din saldo i øverste højre.</p>
+
+        <select id="local_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Bitcoin Display</h3>
+
+        <p>Juster præcision du foretrækker Bitcoin værdier, der skal vises i.</p>
+
+        <select id="btc_currency"></select>
+    </div>
+
+    <div class="page-header">
+        <h3>Transaktioner pr side</h3>
+
+        <p>Indstil antallet af transaktioner vises pr side</p>
+
+        <p>
+            <select id="transactions_per_page">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </p>
+    </div>
+</div>
+
 
 <div class="tab-pane" id="account-notifications">
     <div class="page-header">
@@ -885,9 +909,7 @@
                         <div class="tab-pane active" style="text-align:right" id="deposit-us">
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fcashintocoins.com%3Fcode%3Dblockchain%26address%3D" id="cash-into-coins" target="blank">Cash Into Coins</a>
 
                             
                                 
@@ -899,9 +921,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposit</a>
 
                             
                                 
@@ -912,9 +932,7 @@
                             
                             
 
-                            
-                                <button class="btn btn-primary bitstamp-btn" data-title="Deposit Using Bitstamp" data-link="https://blockchain.info/r?url=https://www.bitstamp.net">Bitstamp Deposit</button>
-                            
+                            <a class="btn btn-primary" href="https://blockchain.info/r?url=https%3A%2F%2Fwww.kraken.com" target="blank"><img src="Resources/kraken-logo-small.png"> Kraken Deposit</a>
                         </div>
 
                         <div class="tab-pane" id="deposit-other">
@@ -922,6 +940,8 @@
                         </div>
                     </div>
                 </div>
+            
+
             
 
             <div class="page-header" id="home-account-container">
@@ -933,7 +953,6 @@
                     <button class="btn" id="my-account-btn">Kontoindstillinger</button>
                 </p>
             </div>
-
 
             <div id="home-backup-container">
                 <h3>Sikkerhedskopiering</h3>
@@ -969,8 +988,8 @@
                     <th>Balance</th>
                     <th></th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
 
             <button class="btn btn-success pop pull-right" id="new-addr" style="margin:5px" title="Ny adresse" data-content="Klik her for at generere en nyt Bitcoin adresse. Du kan begynde at modtage bitcoins til denne adresse med det samme">Ny adresse</button>
@@ -996,7 +1015,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                <th><input type="checkbox" id="enable_archived_checkbox"></th>
+                <th></th>
                 <th>Bitcoin adresse</th>
                 <th></th>
                 <th></th>
@@ -1004,11 +1023,14 @@
                 <tbody></tbody>
             </table>
 
-            <div class="pull-right btn-group">
-                <button class="btn btn-secondary pop" id="archived-sweep" title="Sweep nøgler" data-content="Flyt eventuelle bitcoins i de udvalgte nøgler til en anden Bitcoin adresse.">Sweep nøgler
-                </button>
-                <button class="btn btn-danger pop" id="archived-delete" title="Slet Nøgler" data-content="Slet de valgte private nøgler.">Slet Nøgler
-                </button>
+            <div style="float:left">
+                <button class="btn btn-secondary" id="archived-select-all">Vælge Alle</button>
+                <button class="btn btn-secondary" id="archived-select-none">Vælg Ingen</button>
+            </div>
+
+            <div style="float:right">
+                <button class="btn btn-secondary pop" id="archived-sweep" title="Sweep nøgler" data-content="Flyt eventuelle bitcoins i de udvalgte nøgler til en anden Bitcoin adresse.">Sweep nøgler</button>
+                <button class="btn btn-danger pop" id="archived-delete" title="Slet Nøgler" data-content="Slet de valgte private nøgler.">Slet Nøgler</button>
             </div>
         </div>
 
@@ -1028,8 +1050,8 @@
                     <th class="hidden-phone">Videresend til</th>
                     <th>Udløber i</th>
                 </tr>
-                <tbody></tbody>
                 </thead>
+                <tbody></tbody>
             </table>
             <button class="btn btn-success pull-right" id="shared-address" style="margin:5px">Ny Delt Address</button>
         </div>
@@ -1221,7 +1243,9 @@
             <li class="nav-header">Transaktionstype</li>
             <li class="active"><a href="#send-quick" data-toggle="tab"><i class="icon-time"></i> Hurtig Send</a></li>
             <li><a href="#send-custom" data-toggle="tab"><i class="icon-cog"></i> Brugerdefineret</a></li>
+            <li><a href="#shared-coin" data-toggle="tab"><i class="icon-random"></i> Delt Coin</a></li>
             <li><a href="#send-shared" data-toggle="tab"><i class="icon-random"></i> Delt Send</a></li>
+
             <li class="hidden"><a href="#send-email" data-toggle="tab"><i class="icon-lock"></i> Deponering</a></li>
 
             <li class="nav-header">Send Via</li>
@@ -1230,6 +1254,8 @@
 
             <li class="nav-header">Spil</li>
             <li><a href="#send-satoshi-dice" data-toggle="tab"><i class="icon-dice" style="background-image:url('Resources/dice.png');background-position: 0px;width:16px;height:16px;"></i> Satoshi Dice</a></li>
+
+            
 
             <li class="divider"></li>
             <li class="nav-header">Værktøj</li>
@@ -1259,7 +1285,7 @@
                     <label class="control-label pop" title="Til Adresse" data-content="Dette er Bitcoin adressen på modtageren.">Til:</label>
 
                     <div class="controls">
-                        <span class="qrcodeicon" /><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
+                        <span class="qrcodeicon"><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
 
                         <p class="help-block">Indtast Bitcoin adresse på modtageren</p>
                     </div>
@@ -1387,6 +1413,81 @@
     </div>
 </div>
 
+<div class="tab-pane" id="shared-coin">
+    <div class="well">
+        <a style="float:right;" href="https://blockchain.info/r?url=https%3A%2F%2Fsharedcoin.com" target="blank"><img src="Resources/info.png"></a>
+
+        <h4 class="page-header">Delt Coin<br/><small>Trustless mønt blanding hjælp mønt join og afsmag analyse</small></h4>
+
+        <div class="form-horizontal">
+            <div class="controls">
+                <img src="Resources/sharedcoin_logo_circle.png" style="padding-bottom:25px">
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop" title="Fra Address" data-content="Hvis det er nødvendigt, kan du vælge at sende mønter fra en bestemt adresse i din tegnebog.">Fra:</label>
+
+                <div class="controls">
+                    <select name="from" multiple="multiple"></select>
+                </div>
+            </div>
+
+            <div class="recipient-container">
+                <div class="recipient">
+                    <div class="control-group">
+                        <label class="control-label pop" title="Til Adresse" data-content="Dette er Bitcoin adressen på modtageren.">Til:</label>
+
+                        <div class="controls">
+                            <span class="qrcodeicon" /><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label pop">Beløb:</label>
+
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-value" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label pop">Gentagelser:</label>
+
+                <div class="controls">
+                    <select name="repetitions"><option value="0">Indlæsning af</option></select>
+                    <p class="help-block">Et højere antal gentagelser gør transaktionen sværere at spore og forbedrer privatliv.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="send btn btn-primary pop" title="Gennemse betaling" data-content="Klik her for at gennemse betalingen. Du vil kunne bekræfte eller annullere transaktionen.">Gennemse betaling</button>
+
+                <p class="help-block send-options" style="padding-top:10px">
+                    <b>Maximum Send Value:</b> <span></span><br />
+                    <b>Minimum Send Value:</b> <span></span><br />
+                    <b>Fee procent Repetition:</b> <span></span>%</br />
+                    <b>Minimum Fee Per Repetition:</b> <span></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="well">
+        <h4 style="margin-bottom: 5px">Noget gik galt?</h4>
+
+        <p>
+            Når du sender en delt mønt transaktion en række mellemliggende adresser anvendes. Hvis noget interupts det forarbejdede eller en fejl forhindrer transaktionen i at fuldføre mønterne kan efterlades i en mellemliggende adresse. Klik på knappen nedenfor for at kræve nogen mønter tilbage i mellemliggende adresser, kan denne proces tage flere minutter at fuldføre.
+        </p>
+
+        <p>
+            <button class="btn" id="sharedcoin-recover">Recover Intermediate adresser</button>
+        </p>
+    </div>
+</div>
+
 <div class="tab-pane" id="send-shared">
     <div class="well">
         <a style="float:right;" href="https://blockchain.info/wallet/send-shared" target="blank"><img src="Resources/info.png"></a>
@@ -1400,18 +1501,18 @@
                         <label class="control-label pop" title="Til Adresse" data-content="Dette er Bitcoin adressen på modtageren.">Til:</label>
 
                         <div class="controls">
-                            <span class="qrcodeicon" /><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
+                            <span class="qrcodeicon"><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
 
                             <p class="help-block">Indtast Bitcoin adresse på modtageren</p>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label pop" title="Amount" data-content="The Amount in Bticoins to Send">Amount:</label>
+                        <label class="control-label pop">Beløb:</label>
 
                         <div class="controls">
                             <div class="input-prepend input-append">
-                                <span class="add-on btc-symbol"></span><input class="send-value span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" name="send-value"/><span
+                                <span class="add-on btc-symbol"></span><input class="span2" style="width:90px;" name="send-before-fees" placeholder="0.0" type="text"/><input type="hidden" class="send-value" name="send-value"/><span
                                     class="add-on send-value-usd">$0</span>
                             </div>
 
@@ -1455,7 +1556,7 @@
 
             <div class="controls recipient-container">
                 <div class="recipient" style="margin-bottom:5px">
-                    <span class="qrcodeicon" /><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
+                    <span class="qrcodeicon"><input placeholder="Bitcoin adresse" name="send-to-address" type="text"/><span></span></span>
 
                     <div class="input-prepend input-append">
                         <span class="add-on btc-symbol"></span><input class="send-value span2" name="send-value" style="width:90px;" placeholder="0.0" type="text"/><span class="add-on send-value-usd">$0</span>
@@ -1480,8 +1581,8 @@
             <label class="control-label pop" title="Gebyr" data-content="Dette gebyr vil blive sendt til Bitcoin miners, og kan hjælpe din transaktion til at blive behandlet hurtigere">Gebyr:</label>
 
             <div class="controls">
-                <div class="input-prepend" style="width:220px">
-                    <span class="add-on btc-symbol"></span><input class="span2" placeholder="0.0" name="fees" style="min-width:55px;width:55px" type="text"/>
+                <div class="input-prepend input-append" style="width:220px">
+                    <span class="add-on btc-symbol"></span><input class="span2" name="fees" placeholder="0.0" type="text" style="width:90px;"/><span class="add-on send-value-usd">$0</span>
                 </div>
             </div>
         </div>
@@ -1513,7 +1614,7 @@
     <div class="tab-pane" id="send-satoshi-dice" data-name="satoshidice">
         <div class="well">
             <h4 class="page-header">Vædde med SatoshiDICE<br/>
-                <small><a href="https://blockchain.info/r?url=http://SatoshiDice.com" target="new">SatoshiDICE</a> er det mest populære Bitcoin betting spil. Vind op til 64.000 x din indsats, øjeblikkeligt. Alle terningkast kan verificeres ved hjælp af blokkæden.</small>
+                <small><a href="https://blockchain.info/r?url=http://satoshidice.com" target="new">SatoshiDICE</a> er det mest populære Bitcoin betting spil. Vind op til 64.000 x din indsats, øjeblikkeligt. Alle terningkast kan verificeres ved hjælp af blokkæden.</small>
             </h4>
 
             <div class="form-horizontal">
@@ -1634,19 +1735,6 @@
             </div>
 
             <div class="page-header">
-                <h3>Hjernen tegnebog</h3>
-
-                <p>En Brain Wallet er en privat nøgle podet fra en mindeværdig pass-sætning. Det er muligt at huske denne adgangskode for at genoprette de midler på denne adresse uden at behøve en tegnebog backup.</p>
-
-                <p>Den mindste pass-sætning længde er 15 tegn. Det er stærkt anbefales, at du stadig holde regelmæssige tegnebog sikkerhedskopier selv med pass-sætning udenad.</p>
-
-                <div class="form-inline">
-                    <input placeholder="pass-phrase" id="import-brain-wallet" type="text"/>
-                    <button class="btn btn-primary" style="min-width:171px" id="import-brain-wallet-btn">Generer nøgle</button>
-                </div>
-            </div>
-
-            <div class="page-header">
                 <h3>Importere vha. Paper Wallet</h3>
 
                 <p>Brug dit webcam til at scanne en QR-kode fra et papir tegnebog</p>
@@ -1757,40 +1845,6 @@
             </div>
         </div>
 
-        <div id="import-second-password-modal" class="modal hide">
-            <div class="modal-header">
-                <h3>Wallet Second Password</h3>
-            </div>
-            <div class="modal-body">
-                <p>Indtast den anden adgangskode til denne tegnebog.</p>
-                <p align="center">
-                    <b>Second password:</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Fortsæt</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="import-private-key-password" class="modal hide">
-            <div class="modal-header">
-                <h3>Krypteret private nøgle</h3>
-            </div>
-            <div class="modal-body">
-                <p>En krypteret privat nøgle er blevet opdaget. Indtast krypteringskoden nedenfor:</p>
-                <p align="center">
-                    <b>Adgangssætning::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-primary">Fortsæt</button>
-                </div>
-            </div>
-        </div>
-
         <div id="import-password-modal" class="modal hide">
             <div class="modal-header">
                 <h3>Wallet Password</h3>
@@ -1830,6 +1884,7 @@
     </div>
 </div>
 </div></div>
+</div>
 </div>
 
 
@@ -1946,6 +2001,13 @@
                 <label class="control-label">Label:</label>
                 <div class="controls">
                     <input name="label" placeholder="Label fx Opsparing" type="text" /><p class="help-block">En etiket bruges til at hjælpe dig med huske, hvad denne adresse er til for. Det kan være navnet på en person eller virksomhed.</p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Make Offentlig?</label>
+                <div class="controls">
+                    <input name="make_public" type="checkbox" /><p class="help-block">Som standard adresse etiketter er synlige for kun dig. Offentlige etiketter er offentligt synlige på blockchain hjemmeside og kan ses af alle.</p>
                 </div>
             </div>
         </div>
@@ -2177,23 +2239,51 @@
 </div>
 
 
-<div id="ask-for-shared" class="modal hide">
-    <div class="modal-header">
-        <h3>Send Delt?</h3>
-    </div>
-    <div class="modal-body">
-        <p>Send denne transaktion gennem delte tegnebogen og få en <span class="bonus-percent"></span>% bonus (<span class="bonus-value"></span> vil blive sendt tilbage til den afsendende adresse). Transaktionen vil pådrage en forsinkelse på ca <span class="delay"></span>.</p>
 
-        <div class="alert alert-block alert-error" style="margin: 10px;">
-            Må ikke acceptere, hvis du forventer at modtage betaling tilbage til den afsendende adresse. Delte transaktioner er uforenelige med SatoshiDICE, BitLotto og mange andre Bitcoin spil.
+    <div id="ask-for-shared" class="modal hide">
+        <div class="modal-header">
+            <h3>Send Delt?</h3>
+        </div>
+        <div class="modal-body">
+            <p>Send denne transaktion gennem delte tegnebogen og få en <span class="bonus-percent"></span>% bonus (<span class="bonus-value"></span> vil blive sendt tilbage til den afsendende adresse). Transaktionen vil pådrage en forsinkelse på ca <span class="delay"></span>.</p>
+
+            <div class="alert alert-block alert-error">
+                    Må ikke acceptere, hvis du forventer at modtage betaling tilbage til den afsendende adresse. Delte transaktioner er uforenelige med SatoshiDICE, BitLotto og mange andre Bitcoin spil.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-left"><input type="checkbox" id="shared-never-ask">Spørg mig aldrig igen.</div>
+
+            <div class="btn-group pull-right">
+                <button class="btn btn-secondary">Fortsæt Uden</button>
+                <button class="btn btn-primary">Send Delt?</button>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <div class="pull-left"><input type="checkbox" id="shared-never-ask">Spørg mig aldrig igen.</div>
 
-        <div class="btn-group pull-right">
-            <button class="btn btn-secondary">Fortsæt Uden</button>
-            <button class="btn btn-primary">Send Delt?</button>
+
+<div id="sharedcoin-modal" class="modal hide">
+    <div class="modal-header">
+        <h3>Delt Coin Transaktion</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-block alert-error">
+            Der opstod en fejl udfylde denne delte mønt transaktion. For yderligere information se venligst javascript konsollen.
+        </div>
+
+        <div class="alert alert-block alert-warning">
+            Transaktion i gang. Luk ikke dette vindue eller lukke din browser.
+        </div>
+
+        <p align="center" class="loading-indicator" style="display:none;padding:10px;">
+            <img src="Resources/loading-large.gif"><br /><br /><span class="loading-text" style="font-weight:bold;font-size:16px;"></span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-left">Send <span class="total_value" style="font-weight:bold"></span> to <span class="address" style="font-weight:bold"></span></div>
+
+            <div class="btn-group pull-right">
+            <button class="btn btn-secondary">Annuller</button>
         </div>
     </div>
 </div>
@@ -2225,7 +2315,7 @@
     </div>
     <div class="modal-body">
         <p>Denne transaktion har lav prioritet. Det anbefales, at du mindst betaler et 0,0005 BTC transaktionsgebyr for at sikre at miners behandler den.</p>
-        <div class="alert alert-block alert-error" style="margin: 10px;">Hvis du ikke betaler et gebyr kan denne transaktion tage lang tid at få bekræftet. Alle midler vil blive returneret til dig efter cirka 24 timer.</div>
+        <div class="alert alert-block alert-error">Hvis du ikke betaler et gebyr kan denne transaktion tage lang tid at få bekræftet. Alle midler vil blive returneret til dig efter cirka 24 timer.</div>
     </div>
     <div class="modal-footer">
         <div class="btn-group pull-right">
@@ -2408,13 +2498,13 @@
         <h4 class="page-header">Blockchain.info Is Offline</h4>
 
         <p>
-           <ul>
-              <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
-              <li>Launch the application. Choose Tools -> Import Private Keys.</li>
-              <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
-              <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
-              <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
-            </ul>
+        <ul>
+            <li>Download the <a href="https://blockchain.info/r?url=https://multibit.org">Multibit</a> desktop client available for Windows, Mac OSX and Linux.</li>
+            <li>Launch the application. Choose Tools -> Import Private Keys.</li>
+            <li>Click the "Choose Import File" button and navigate to your wallet.aes.json file. Change the file format to *.aes.json and open the file.</li>
+            <li>Enter the wallet password and press unlock. If required enter the second password and press unlock again.</li>
+            <li>Click The Import Private Keys Button to complete the process. Your balance will be restored once the blockchain has downloaded.</li>
+        </ul>
         </p>
     </div>
 
@@ -2425,6 +2515,22 @@
     </div>
 </div>
 
+<div id="import-private-key-password" class="modal hide">
+    <div class="modal-header">
+        <h3>Krypteret private nøgle</h3>
+    </div>
+    <div class="modal-body">
+        <p>En krypteret privat nøgle er blevet opdaget. Indtast krypteringskoden nedenfor:</p>
+        <p align="center">
+            <b>Adgangssætning::</b> <input style="margin-left:10px" placeholder="password" name="password" type="password"/>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary">Fortsæt</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

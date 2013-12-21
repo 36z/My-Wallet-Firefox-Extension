@@ -1,7 +1,7 @@
 {
  "enable_e10s": false, 
  "is-sdk-bundled": true, 
- "jetpackID": "jid0-3vNsCLFRWLADQlSM1XGb50OxAR0@jetpack", 
+ "jetpackID": "jid0-V4pG0TjosDUIMxKNdyd42yJE0pg@jetpack", 
  "loader": "addon-sdk/lib/sdk/loader/cuddlefish.js", 
  "main": "main", 
  "mainPath": "blockchain/main", 

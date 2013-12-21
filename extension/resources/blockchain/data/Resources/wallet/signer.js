@@ -36,9 +36,9 @@ function IsCanonicalSignature(vchSig) {
         throw 'Non-canonical signature: too short';
     if (vchSig.length > 73)
         throw 'Non-canonical signature: too long';
-    var nHashType = vchSig[vchSig.length - 1] & (~(SIGHASH_ANYONECANPAY));
-    if (nHashType < SIGHASH_ALL || nHashType > SIGHASH_SINGLE)
-        throw 'Non-canonical signature: unknown hashtype byte';
+    var nHashType = vchSig[vchSig.length - 1];
+    if (nHashType != SIGHASH_ALL && nHashType != SIGHASH_NONE && nHashType != SIGHASH_SINGLE && nHashType != SIGHASH_ANYONECANPAY)
+        throw 'Non-canonical signature: unknown hashtype byte ' + nHashType;
     if (vchSig[0] != 0x30)
         throw 'Non-canonical signature: wrong type';
     if (vchSig[1] != vchSig.length-3)
@@ -136,6 +136,7 @@ function showPrivateKeyModal(success, error, addr) {
     modal.find('.address').text(addr);
 
     var scanned_key = null;
+    var compressed = false;
     var error_msg = null;
     var key_input = modal.find('input[name="key"]');
 
@@ -147,19 +148,11 @@ function showPrivateKeyModal(success, error, addr) {
         MyWallet.scanQRCode(function(code) {
             console.log('Scanned ' + code);
 
-            try {
-                scanned_key = MyWallet.privateKeyStringToKey(code, MyWallet.detectPrivateKeyFormat(code));
-
-                if (scanned_key == null) {
-                    error_msg = 'Error decoding private key';
-                }
-            } catch(e) {
-                error_msg = 'Error decoding private key ' + e;
-            }
-
             modal.modal('show');
 
             key_input.val(code);
+
+            modal.find('.btn.btn-primary').trigger('click');
         }, function(e) {
             modal.modal('show');
 
@@ -175,7 +168,35 @@ function showPrivateKeyModal(success, error, addr) {
                 throw  'You must enter a private key to import';
             }
 
-            scanned_key = MyWallet.privateKeyStringToKey(value, MyWallet.detectPrivateKeyFormat(value));
+            var format = MyWallet.detectPrivateKeyFormat(value);
+
+            console.log('PK Format ' + format);
+
+            if (format == 'bip38') {
+                modal.modal('hide');
+
+                loadScript('wallet/import-export', function() {
+                    MyWallet.getPassword($('#import-private-key-password'), function(_password) {
+                        ImportExport.parseBIP38toECKey(value, _password, function(key, isCompPoint) {
+                            scanned_key = key;
+                            compressed = isCompPoint;
+
+                            modal.modal('hide');
+
+                            if (scanned_key)
+                                success(scanned_key);
+                            else
+                                error(error_msg);
+
+                        }, error);
+                    }, error);
+                }, error);
+
+                return;
+            }
+
+            scanned_key = MyWallet.privateKeyStringToKey(value, format);
+            compressed = (format == 'compsipa');
 
             if (scanned_key == null) {
                 throw 'Could not decode private key';
@@ -237,7 +258,19 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
     }
 
     try {
-        $('.send-value,.send-value-usd,.send').prop('disabled', true);
+        el.find('input,select,button').prop('disabled', true);
+
+        pending_transaction.addListener({
+            on_success : function(e) {
+                el.find('input,select,button').prop('disabled', false);
+            },
+            on_start : function(e) {
+                el.find('input,select,button').prop('disabled', true);
+            },
+            on_error : function(e) {
+                el.find('input,select,button').prop('disabled', false);
+            }
+        });
 
         var total_value = 0;
         el.find('input[name="send-value"]').each(function() {
@@ -252,8 +285,8 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
                 type = 'custom';
                 custom_ask_for_fee = false;
             }
-        } else if (type == 'shared' && total_value < precisionFromBTC(0.2)) {
-            throw 'The Minimum Amount You Can Send Shared is ' + formatPrecision(precisionFromBTC(0.2));
+        } else if (type == 'shared' && total_value < precisionFromBTC(0.1)) {
+            throw 'The Minimum Amount You Can Send Shared is ' + formatPrecision(precisionFromBTC(0.1));
         } else if (type == 'shared' && total_value > precisionFromBTC(250)) {
             throw 'The Maximum Amount You Can Send Shared is ' +  formatPrecision(precisionFromBTC(250));
         }
@@ -306,8 +339,8 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
             }
         }
 
-        var listener = {};
         if (type == 'custom' || type == 'shared') {
+
             var listener = {
                 on_error : function(e) {
                     if (this.modal)
@@ -640,11 +673,11 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
             if (self.modal)
                 self.modal.modal('hide'); //Hide the transaction progress modal
 
-            showPrivateKeyModal(function(key) {
+            showPrivateKeyModal(function(key, compressed) {
                 if (self.modal)
                     self.modal.modal('show'); //Show the progress modal again
 
-                success(key);
+                success(key, compressed);
             }, function (e) {
                 if (self.modal)
                     self.modal.modal('show'); //Show the progress modal again
@@ -655,7 +688,7 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
 
         pending_transaction.type = type;
 
-        //Default is 0.0005 Base Fee, No fee
+        //Default is 0.0001 Base Fee, No fee
         if (MyWallet.getFeePolicy() == 1) {
             pending_transaction.base_fee = BigInteger.valueOf(100000); //0.001 BTC
             pending_transaction.fee = BigInteger.valueOf(100000); //0.001 BTC
@@ -760,6 +793,7 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
                             if (value == null || value.compareTo(BigInteger.ZERO) <= 0)
                                 throw 'You must enter a value greater than zero';
                         } catch (e) {
+                            console.log(e);
 
                             if (value_input.data('optional') == true) {
                                 --n_recipients;
@@ -924,71 +958,10 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
     return pending_transaction;
 };
 
-function readVarInt(buff) {
-    var tbyte, tbytes;
 
-    tbyte = buff.splice(0, 1)[0];
+function signInput(tx, inputN, base58Key, connected_script, type) {
 
-    if (tbyte < 0xfd) {
-        tbytes = [tbyte];
-    } else if (tbyte == 0xfd) {
-        tbytes = buff.splice(0, 2);
-    } else if (tbyte == 0xfe) {
-        tbytes = buff.splice(0, 4);
-    } else {
-        tbytes = buff.splice(0, 8);
-    }
-
-    return new BigInteger(tbytes);
-}
-
-function readUInt32(buffer) {
-    return new BigInteger(buffer.splice(0, 4).reverse()).intValue();
-}
-
-/*
- Bitcoin.Transaction.deserialize = function (buffer)
- {
- var tx = new Bitcoin.Transaction();
-
- tx.version = readUInt32(buffer);
-
- var txInCount = readVarInt(buffer).intValue();
-
- for (var i = 0; i < txInCount; i++) {
-
- var outPointHashBytes = buffer.splice(0,32);
- var outPointHash = Crypto.util.bytesToBase64(outPointHashBytes);
-
- var outPointIndex = readUInt32(buffer);
-
- var scriptLength = readVarInt(buffer).intValue();
- var script = new Bitcoin.Script(buffer.splice(0, scriptLength));
- var sequence = readUInt32(buffer);
-
- var input = new Bitcoin.TransactionIn({outpoint : {hash: outPointHash, index : outPointIndex}, script: script,  sequence: sequence});
-
- tx.ins.push(input);
- }
-
- var txOutCount = readVarInt(buffer).intValue();
- for (var i = 0; i < txOutCount; i++) {
-
- var valueBytes = buffer.splice(0, 8);
- var scriptLength = readVarInt(buffer).intValue();
- var script = new Bitcoin.Script(buffer.splice(0, scriptLength));
-
- var out = new Bitcoin.TransactionOut({script : script, value : valueBytes})
-
- tx.outs.push(out);
- }
-
- tx.lock_time = readUInt32(buffer);
-
- return tx;
- };   */
-
-function signInput(tx, inputN, base58Key, connected_script) {
+    type = type ? type : SIGHASH_ALL;
 
     var pubKeyHash = connected_script.simpleOutPubKeyHash();
 
@@ -1005,14 +978,14 @@ function signInput(tx, inputN, base58Key, connected_script) {
         throw 'Private key does not match bitcoin address ' + inputBitcoinAddress.toString() + ' = ' + key.getBitcoinAddress().toString() + ' | '+ key.getBitcoinAddressCompressed().toString();
     }
 
-    var hash = tx.hashTransactionForSignature(connected_script, inputN, SIGHASH_ALL);
+    var hash = tx.hashTransactionForSignature(connected_script, inputN, type);
 
     var rs = key.sign(hash);
 
     var signature = Bitcoin.ECDSA.serializeSig(rs.r, rs.s);
 
     // Append hash type
-    signature.push(SIGHASH_ALL);
+    signature.push(type);
 
     if (!IsCanonicalSignature(signature)) {
         throw 'IsCanonicalSignature returned false';
@@ -1202,17 +1175,23 @@ function initNewTx() {
         listeners : [],
         is_cancelled : false,
         ask_to_send_shared : false,
-        base_fee : BigInteger.valueOf(50000),
+        base_fee : BigInteger.valueOf(10000),
         min_free_output_size : BigInteger.valueOf(1000000),
         allow_adjust : true,
         ready_to_send_header : 'Transaction Ready to Send.',
+        min_input_confirmations : 0,
+        min_input_size : BigInteger.ZERO,
         addListener : function(listener) {
             this.listeners.push(listener);
         },
         invoke : function (cb, obj, ob2) {
             for (var key in this.listeners) {
-                if (this.listeners[key][cb])
-                    this.listeners[key][cb].call(this, obj, ob2);
+                try {
+                    if (this.listeners[key][cb])
+                        this.listeners[key][cb].call(this, obj, ob2);
+                } catch(e) {
+                    console.log(e);
+                }
             }
         }, start : function() {
             var self = this;
@@ -1261,10 +1240,13 @@ function initNewTx() {
                     }
                 }, function(e) {
                     self.error(e);
-                });
+                }, self.min_input_confirmations);
             } catch (e) {
                 self.error(e);
             }
+        },
+        isSelectedValueSufficient : function(txValue, availableValue) {
+          return availableValue.compareTo(txValue) == 0 || availableValue.compareTo(txValue.add(this.min_free_output_size)) >= 0;
         },
         //Select Outputs and Construct transaction
         makeTransaction : function() {
@@ -1306,9 +1288,7 @@ function initNewTx() {
 
                 //First try without including watch only
                 //If we don't have enough funds ask for the watch only private key
-                var includeWatchOnly = false;
                 var unspent_copy = self.unspent.slice(0);
-
                 function parseOut(out) {
                     var addr = new Bitcoin.Address(out.script.simpleOutPubKeyHash()).toString();
 
@@ -1316,15 +1296,15 @@ function initNewTx() {
                         throw 'Unable to decode output address from transaction hash ' + out.tx_hash;
                     }
 
-                    var hexhash = Crypto.util.hexToBytes(out.tx_hash);
-
                     var b64hash = Crypto.util.bytesToBase64(Crypto.util.hexToBytes(out.tx_hash));
 
-                    var input =  new Bitcoin.TransactionIn({outpoint: {hash: b64hash, hexhash: hexhash, index: out.tx_output_n, value:out.value}, script: out.script, sequence: 4294967295});
+                    var input =  new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: out.tx_output_n, value:out.value}, script: out.script, sequence: 4294967295});
 
                     return {addr : addr , input : input}
-                }
+                };
 
+                //Loop once without watch only, then again with watch only
+                var includeWatchOnly = false;
                 while(true) {
                     for (var i = 0; i < unspent_copy.length; ++i) {
                         var out = unspent_copy[i];
@@ -1342,18 +1322,23 @@ function initNewTx() {
                                 continue;
                             }
 
+                            //Ignore inputs less than min_input_size
+                            if (out.value.compareTo(self.min_input_size) < 0) {
+                                continue;
+                            }
+
                             //If the output happens to be greater than tx value then we can make this transaction with one input only
                             //So discard the previous selected outs
                             //out.value.compareTo(self.min_free_output_size) >= 0 because we want to prefer a change output of greater than 0.01 BTC
                             //Unless we have the extact tx value
-                            if (out.value.compareTo(txValue) == 0 || out.value.compareTo(txValue.add(self.min_free_output_size)) >= 0) {
+                            if (out.value.compareTo(txValue) == 0 || self.isSelectedValueSufficient(txValue, out.value)) {
                                 self.selected_outputs = [addr_input_obj.input];
 
                                 unspent_copy[i] = null; //Mark it null so we know it is used
 
                                 addresses_used = [addr_input_obj.addr];
 
-                                priority = out.value * out.confirmations;
+                                priority = out.value.intValue() * out.confirmations;
 
                                 availableValue = out.value;
 
@@ -1366,11 +1351,11 @@ function initNewTx() {
 
                                 addresses_used.push(addr_input_obj.addr);
 
-                                priority += out.value * out.confirmations;
+                                priority += out.value.intValue() * out.confirmations;
 
                                 availableValue = availableValue.add(out.value);
 
-                                if (availableValue.compareTo(txValue) == 0 || availableValue.compareTo(txValue.add(self.min_free_output_size)) >= 0)
+                                if (self.isSelectedValueSufficient(txValue, availableValue))
                                     break;
                             }
                         } catch (e) {
@@ -1379,7 +1364,7 @@ function initNewTx() {
                         }
                     }
 
-                    if (availableValue.compareTo(txValue) >= 0)
+                    if (self.isSelectedValueSufficient(txValue, availableValue))
                         break;
 
                     if (includeWatchOnly)
@@ -1430,7 +1415,6 @@ function initNewTx() {
                     sendTx.addInput(self.selected_outputs[i]);
                 }
 
-                var askforfee = false;
                 for (var i =0; i < self.to_addresses.length; ++i) {
                     var addrObj = self.to_addresses[i];
                     if (addrObj.m != null) {
@@ -1499,23 +1483,23 @@ function initNewTx() {
                 //18 bytes standard header
                 //standard scriptPubKey 24 bytes
                 //Stanard scriptSig 64 bytes
-                var estimatedSize = sendTx.serialize(sendTx).length + (114 * sendTx.ins.length);
+                var estimatedSize = sendTx.serialize(sendTx).length + (138 * sendTx.ins.length);
 
                 priority /= estimatedSize;
 
-                var kilobytes = Math.max(1, Math.ceil(parseFloat(estimatedSize / 1024)));
+                var kilobytes = Math.max(1, Math.ceil(parseFloat(estimatedSize / 1000)));
 
                 var fee_is_zero = (!self.fee || self.fee.compareTo(self.base_fee) < 0);
 
                 //Priority under 57 million requires a 0.0005 BTC transaction fee (see https://en.bitcoin.it/wiki/Transaction_fees)
                 if (fee_is_zero && (forceFee || kilobytes > 1)) {
                     //Forced Fee
-                    self.fee = self.base_fee.multiply(BigInteger.valueOf(kilobytes)); //0.0005 BTC * kilobytes
+                    self.fee = self.base_fee.multiply(BigInteger.valueOf(kilobytes));
 
                     self.makeTransaction();
-                } else if (fee_is_zero && (priority < 77600000 || isEscrow || askforfee)) { //Bit extra added to priority
+                } else if (fee_is_zero && (MyWallet.getRecommendIncludeFee() || (priority < 77600000 || isEscrow))) {
                     self.ask_for_fee(function() {
-                        self.fee = self.base_fee.multiply(BigInteger.valueOf(kilobytes)); //0.0005 BTC * kilobytes
+                        self.fee = self.base_fee.multiply(BigInteger.valueOf(kilobytes));
 
                         self.makeTransaction();
                     }, function() {
@@ -1543,7 +1527,6 @@ function initNewTx() {
             no();
         },
         determinePrivateKeys: function(success) {
-
             var self = this;
 
             try {
@@ -1563,7 +1546,7 @@ function initNewTx() {
                         //Find the matching private key
                         if (tmp_cache[inputAddress]) {
                             connected_script.priv_to_use = tmp_cache[inputAddress];
-                        } else if (self.extra_private_keys[inputAddress]) {
+                        } else if (self.extra_private_keys && self.extra_private_keys[inputAddress]) {
                             connected_script.priv_to_use = Bitcoin.Base58.decode(self.extra_private_keys[inputAddress]);
                         } else if (MyWallet.addressExists(inputAddress) && !MyWallet.isWatchOnly(inputAddress)) {
                             try {
@@ -1576,6 +1559,7 @@ function initNewTx() {
                         if (connected_script.priv_to_use == null) {
                             //No private key found, ask the user to provide it
                             self.ask_for_private_key(function (key) {
+
                                 try {
                                     if (inputAddress == key.getBitcoinAddress().toString() || inputAddress == key.getBitcoinAddressCompressed().toString()) {
                                         self.extra_private_keys[inputAddress] = Bitcoin.Base58.encode(key.priv);
@@ -1836,21 +1820,13 @@ function initNewTx() {
         }
     };
 
-    var base_listener = {
+    pending_transaction.addListener({
         on_error : function(e) {
             console.log(e);
 
             if(e) {
                 MyWallet.makeNotice('error', 'tx-error', e);
             }
-
-            $('.send-value,.send-value-usd,.send').removeAttr('disabled');
-        },
-        on_success : function(e) {
-            $('.send-value,.send-value-usd,.send').removeAttr('disabled');
-        },
-        on_start : function(e) {
-            $('.send-value,.send-value-usd,.send').prop('disabled', true);
         },
         on_begin_signing : function() {
             this.start = new Date().getTime();
@@ -1858,9 +1834,7 @@ function initNewTx() {
         on_finish_signing : function() {
             console.log('Took ' + (new Date().getTime() - this.start) + 'ms');
         }
-    };
-
-    pending_transaction.addListener(base_listener);
+    });
 
     return pending_transaction;
 }
