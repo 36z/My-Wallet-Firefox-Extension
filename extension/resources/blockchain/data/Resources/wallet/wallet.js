@@ -1605,13 +1605,16 @@ var MyWallet = new function() {
 
         $('#summary-balance').html(formatMoney(final_balance, symbol));
 
-        var preferred = MyWallet.getPreferredAddress();
-
         $('.paper-wallet-btn').unbind().click(function() {
             loadScript('wallet/paper-wallet', function() {
                 PaperWallet.showModal();
             });
         });
+
+        var preferred = MyWallet.getPreferredAddress();
+
+        if (preferred == null)
+            return;
 
         if (MyWallet.isWatchOnly(preferred)) {
             $('.no-watch-only').hide();
@@ -1627,6 +1630,11 @@ var MyWallet = new function() {
                 });
             }
         }
+
+        $('#tweet-for-btc').unbind().click(function() {
+            MyWallet.openWindow('https://twitter.com/share?url=https://blockchain.info/wallet&hashtags=tweet4btc,bitcoin,'+preferred+'&text=Sign Up For a Free Bitcoin Wallet @ Blockchain.info');
+        });
+
     }
 
     //Show a Advanced Warning, The show Import-Export Button After Main Password is Entered
@@ -1975,8 +1983,9 @@ var MyWallet = new function() {
             try {
                 sharedKey = obj.sharedKey;
 
-                if (!sharedKey || sharedKey.length == 0 || sharedKey.length != 36)
+                if (!sharedKey || sharedKey.length == 0 || sharedKey.length != 36) {
                     throw 'Shared Key is invalid';
+                }
 
                 if (rootContainer) {
                     encryption_version_used = rootContainer.version;
@@ -1996,12 +2005,12 @@ var MyWallet = new function() {
                 addresses = {};
                 for (var i = 0; i < obj.keys.length; ++i) {
                     var key = obj.keys[i];
-                    if (key.addr == null || key.addr.length == 0 || key.addr == 'undefined') {
-                        MyWallet.makeNotice('error', 'null-error', 'Your wallet contains an undefined address. This is a sign of possible corruption, please double check all your BTC is accounted for. Backup your wallet to remove this error.', 15000);
+                    if (!key.addr || !isAlphaNumericSpace(key.addr)) {
+                        MyWallet.makeNotice('error', 'null-error', 'Your wallet contains an invalid address. This is a sign of possible corruption, please double check all your BTC is accounted for. Backup your wallet to remove this error.', 15000);
                         continue;
                     }
 
-                    if (key.tag == 1) {
+                    if (key.tag == 1 || !isAlphaNumericSpace(key.tag)) {
                         key.tag = null;
                     }
 
@@ -2017,7 +2026,7 @@ var MyWallet = new function() {
                     for (var i = 0; i < obj.address_book.length; ++i) {
                         var entry = obj.address_book[i];
 
-                        if (entry.label && isAlphaNumericSpace(entry.label)) {
+                        if (entry.label && isAlphaNumericSpace(entry.label) && isAlphaNumericSpace(entry.addr)) {
                             MyWallet.addAddressBookEntry(entry.addr, entry.label);
                         }
                     }
@@ -2803,6 +2812,9 @@ var MyWallet = new function() {
             data.checksum = payload_checksum;
         }
 
+        //Deprecate Local Browser Caching
+        MyStore.remove('payload');
+
         $.ajax({
             type: "GET",
             dataType: 'json',
@@ -2852,7 +2864,6 @@ var MyWallet = new function() {
                 MyStore.get('guid', function(local_guid) {
                     if (local_guid != guid) {
                         MyStore.remove('guid');
-                        MyStore.remove('payload');
                         MyStore.remove('multiaddr');
 
                         //Demo Account Guid
@@ -4344,7 +4355,7 @@ var MyWallet = new function() {
 
     $(document).ready(function() {
 
-        if (!$.isEmptyObject({})) {
+        if (!$.isEmptyObject({}) || !$.isEmptyObject([])) {
             MyWallet.makeNotice('error', 'error', 'Object.prototype has been extended by a browser extension. Please disable this extensions and reload the page.');
             return;
         }
@@ -4373,24 +4384,6 @@ var MyWallet = new function() {
         if (MyWallet.skip_init)
             return;
 
-        var pendingGets = 1;
-        function isInitialReady() {
-            --pendingGets;
-
-            if (pendingGets == -1) {
-                bindInitial();
-            }
-        }
-
-        MyStore.get('payload', function(result) {
-            if (!encrypted_wallet_data && result) {
-                encrypted_wallet_data = result;
-                payload_checksum = generatePayloadChecksum();
-            }
-
-            isInitialReady();
-        });
-
         MyStore.get('server_time_offset', function (_serverTimeOffset) {
             serverTimeOffset = parseInt(_serverTimeOffset);
 
@@ -4399,16 +4392,17 @@ var MyWallet = new function() {
         });
 
         if ((!guid || guid.length == 0) && (isExtension || window.location.href.indexOf('/login') > 0)) {
-            ++pendingGets;
             MyStore.get('guid', function(result) {
                 guid = result;
 
                 tSetGUID();
 
-                isInitialReady();
+                bindInitial();
             });
         } else {
             tSetGUID();
+
+            bindInitial();
         }
 
         //Frame break
@@ -4435,8 +4429,6 @@ var MyWallet = new function() {
                     rng_seed_int(event.clientX * event.clientY);
                 }
             });
-
-        isInitialReady();
 
         $('.auth-'+auth_type).show();
 

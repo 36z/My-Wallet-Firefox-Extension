@@ -1,7 +1,14 @@
 var SharedCoin = new function() {
     var SharedCoin = this;
     var AjaxTimeout = 120000;
-    var AjaxRetry = 2;
+    var AjaxRetry = 3;
+    var LastSignatureSubmitTime = 0;
+    var MinTimeBetweenSubmits = 120000;
+    var options = {};
+    var version = 3;
+    var URL = MyWallet.getSharedcoinEndpoint() + '?version=' + version;
+    var extra_private_keys = {};
+    var seed_prefix = 'sharedcoin-seed:';
 
     /*globals jQuery, window */
     (function($) {
@@ -108,12 +115,6 @@ var SharedCoin = new function() {
         return tx;
     };
 
-    var options = {};
-    var version = 3;
-    var URL = MyWallet.getSharedcoinEndpoint() + '?version=' + version;
-    var extra_private_keys = {};
-    var seed_prefix = 'sharedcoin-seed:';
-
     function divideUniformlyRandomly(sum, n)
     {
         var nums = [];
@@ -194,7 +195,7 @@ var SharedCoin = new function() {
                     type: "POST",
                     url: URL,
                     timeout: AjaxTimeout,
-                    retryLimit: AjaxRetry,
+                    retryLimit: 4,
                     data : {method : 'poll_for_proposal_completed', format : 'json', proposal_id : self.proposal_id},
                     success: function (obj) {
                         success(obj);
@@ -229,7 +230,7 @@ var SharedCoin = new function() {
             offered_outpoints : [], //The outpoints we want to offer
             request_outputs : [], //The outputs we want in return
             offer_id : 0, //A unique ID for this offer (set by server)
-            submit : function(success, error) {
+            submit : function(success, error, complete) {
                 var self = this;
 
                 MyWallet.setLoadingText('Submitting Offer');
@@ -242,11 +243,12 @@ var SharedCoin = new function() {
                     retryLimit: AjaxRetry,
                     data : {method : 'submit_offer', format : 'json', token : SharedCoin.getToken(), offer : JSON.stringify(self)},
                     success: function (obj) {
-                        if (!obj.offer_id) {
+                        if (obj.status == 'complete') {
+                            complete(obj.tx_hash, obj.tx);
+                        } else if (!obj.offer_id) {
                             error('Null offer_id returned');
                         } else {
                             self.offer_id = obj.offer_id;
-
                             success();
                         }
                     },
@@ -493,6 +495,10 @@ var SharedCoin = new function() {
                         try {
                             var connected_script = connected_scripts[index];
 
+                            if (connected_script == null) {
+                                throw 'Null connected script';
+                            }
+
                             var signed_script = signInput(tx, connected_script.tx_input_index, connected_script.priv_to_use, connected_script, SIGHASH_ALL);
 
                             if (signed_script) {
@@ -523,6 +529,8 @@ var SharedCoin = new function() {
                 var self = this;
 
                 MyWallet.setLoadingText('Submitting Signatures');
+
+                LastSignatureSubmitTime = new Date().getTime();
 
                 $.retryAjax({
                     dataType: 'json',
@@ -562,6 +570,10 @@ var SharedCoin = new function() {
                         var request = proposal.signature_requests[i];
 
                         var connected_script = new Bitcoin.Script(Crypto.util.hexToBytes(request.connected_script));
+
+                        if (connected_script == null) {
+                            throw 'signInputs() Connected script is null';
+                        }
 
                         connected_script.tx_input_index = request.tx_input_index;
                         connected_script.offer_outpoint_index = request.offer_outpoint_index;
@@ -693,7 +705,7 @@ var SharedCoin = new function() {
                             }, error)
                         }, error, complete);
                     }, error);
-                }, error);
+                }, error, complete);
             },
             execute : function(success, error) {
                 var self = this;
@@ -847,12 +859,12 @@ var SharedCoin = new function() {
                                         var remainderDivides = [];
                                         if (valueAndRemainder[1].compareTo(BigInteger.ZERO) > 0) {
                                             if (quotient <= 1) {
-                                                var new_address = self.generateAddressFromSeed();
-
                                                 if (valueAndRemainder[1].compareTo(SharedCoin.getMinimumInputValue()) < 0 ||
                                                     valueAndRemainder[1].compareTo(SharedCoin.getMaximumOutputValue()) > 0) {
                                                     continue;
                                                 }
+
+                                                var new_address = self.generateAddressFromSeed();
 
                                                 offer.request_outputs.push({
                                                     value : valueAndRemainder[1].toString(),
@@ -1100,6 +1112,7 @@ var SharedCoin = new function() {
             var change_address = plan.generateAddressFromSeed();
 
             newTx.min_input_confirmations = 1;
+            newTx.do_not_use_unspent_cache = true;
             newTx.allow_adjust = false;
             newTx.change_address = change_address;
             newTx.base_fee = BigInteger.ZERO;
@@ -1348,7 +1361,7 @@ var SharedCoin = new function() {
                             MyWallet.makeNotice('error', 'misc-error', e);
 
                             setTimeout(function() {
-                                if (plan && plan.c_stage > 0) {
+                                if (plan && plan.c_stage >= 0) {
                                     console.log('Recover Seed');
                                     SharedCoin.recoverSeeds([seed_prefix + plan.address_seed], function() {
                                         console.log('Recover Success');
@@ -1395,16 +1408,30 @@ var SharedCoin = new function() {
 
                                 el.find('input,select,button').prop('disabled', true);
 
-                                SharedCoin.constructPlan(el, function(plan) {
+                                MyWallet.setLoadingText('Constructing Plan. Please Wait.');
 
-                                    console.log('Created Plan');
+                                var timeSinceLastSubmit = new Date().getTime() - LastSignatureSubmitTime;
 
-                                    console.log(plan);
 
-                                    plan.execute(success, function(e) {
-                                        error(e, plan);
-                                    });
-                                }, error);
+                                var interval = Math.max(0, MinTimeBetweenSubmits - timeSinceLastSubmit);
+
+                                if (interval > 0 )
+                                    $('.loading-indicator').fadeIn(200);
+
+                                setTimeout(function() {
+                                    $('.loading-indicator').hide();
+
+                                    SharedCoin.constructPlan(el, function(plan) {
+
+                                        console.log('Created Plan');
+
+                                        console.log(plan);
+
+                                        plan.execute(success, function(e) {
+                                            error(e, plan);
+                                        });
+                                    }, error);
+                                }, interval)
                             }, error);
                         }, error);
                     });
@@ -1414,51 +1441,47 @@ var SharedCoin = new function() {
             }
         }
 
-        if ($.isEmptyObject(options)) {
-            MyWallet.setLoadingText('Fetching SharedCoin Info');
+        MyWallet.setLoadingText('Fetching SharedCoin Info');
 
-            $.retryAjax({
-                dataType: 'json',
-                type: "POST",
-                url: URL,
-                timeout: AjaxTimeout,
-                retryLimit: AjaxRetry,
-                data : {method : 'get_info', format : 'json'},
-                success: function (obj) {
-                    try {
-                        options = obj;
+        $.retryAjax({
+            dataType: 'json',
+            type: "POST",
+            url: URL,
+            timeout: AjaxTimeout,
+            retryLimit: AjaxRetry,
+            data : {method : 'get_info', format : 'json'},
+            success: function (obj) {
+                try {
+                    options = obj;
 
-                        if (!SharedCoin.getIsEnabled()) {
-                            throw 'Shared Coin is currently disabled';
-                        }
-
-                        if (version < SharedCoin.getMinimumSupportedVersion()) {
-                            throw 'Version out of date. Please update your client or reload the page.';
-                        }
-
-                        setSendOptions();
-
-                        repetitionsSelect.empty();
-
-                        for (var ii = obj.recommended_min_iterations; ii <= obj.recommended_max_iterations; ii+=1) {
-                            repetitionsSelect.append('<option value="'+(ii)+'">'+(ii)+' Repetitions</option>');
-                        }
-
-                        repetitionsSelect.val(obj.recommended_iterations);
-                    } catch (e) {
-                        MyWallet.makeNotice('error', 'misc-error', e);
+                    if (!SharedCoin.getIsEnabled()) {
+                        throw 'Shared Coin is currently disabled';
                     }
 
-                    enableSendButton();
-                },
-                error : function(e) {
-                    send_button.prop('disabled', true);
-                    MyWallet.makeNotice('error', 'misc-error', e.responseText);
+                    if (version < SharedCoin.getMinimumSupportedVersion()) {
+                        throw 'Version out of date. Please update your client or reload the page.';
+                    }
+
+                    setSendOptions();
+
+                    repetitionsSelect.empty();
+
+                    for (var ii = obj.recommended_min_iterations; ii <= obj.recommended_max_iterations; ii+=1) {
+                        repetitionsSelect.append('<option value="'+(ii)+'">'+(ii)+' Repetitions</option>');
+                    }
+
+                    repetitionsSelect.val(obj.recommended_iterations);
+                } catch (e) {
+                    MyWallet.makeNotice('error', 'misc-error', e);
                 }
-            });
-        } else {
-            setSendOptions();
-        }
+
+                enableSendButton();
+            },
+            error : function(e) {
+                send_button.prop('disabled', true);
+                MyWallet.makeNotice('error', 'misc-error', e.responseText);
+            }
+        });
 
         enableSendButton();
     }

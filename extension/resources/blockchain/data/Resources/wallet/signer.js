@@ -291,53 +291,6 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
             throw 'The Maximum Amount You Can Send Shared is ' +  formatPrecision(precisionFromBTC(250));
         }
 
-        if (MyWallet.getMixerFee() < 0 && (type == 'custom' || type == 'quick') && total_value >= precisionFromBTC(5) && getCookie('shared-never-ask') != 'true' && !dont_ask_for_anon) {
-
-            var last_accepted_time = getCookie('shared-accepted-time');
-            if (!last_accepted_time || parseInt(last_accepted_time) < new Date().getTime()-43200000) {
-                var modal = $('#ask-for-shared');
-
-                modal.find('.bonus-percent').text(- MyWallet.getMixerFee());
-                modal.find('.bonus-value').text(formatPrecision((total_value / 100) * - MyWallet.getMixerFee()));
-
-                var delay_span = modal.find('.delay');
-                if (total_value <= precisionFromBTC(10))
-                    delay_span.text('20 Seconds');
-                else if (total_value <= precisionFromBTC(25))
-                    delay_span.text('10 Minutes');
-                else if (total_value <= precisionFromBTC(250))
-                    delay_span.text('20 Minutes');
-                else
-                    delay_span.text('1 hour');
-
-                modal.modal({
-                    keyboard: false,
-                    backdrop: "static",
-                    show: true
-                });
-
-                modal.find('.btn.btn-primary').unbind().click(function() {
-                    var anon_pending = startTxUI(el, 'shared', pending_transaction);
-
-                    anon_pending.addListener({
-                        on_success : function() {
-                            //Set a cookie to not ask again within 12 hours
-                            SetCookie('shared-accepted-time', new Date().getTime());
-                        }
-                    });
-
-                    modal.modal('hide');
-                });
-
-                modal.find('.btn.btn-secondary').unbind().click(function() {
-                    modal.modal('hide');
-
-                    startTxUI(el, type, pending_transaction, true)
-                });
-
-                return;
-            }
-        }
 
         if (type == 'custom' || type == 'shared') {
 
@@ -410,6 +363,46 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
                         backdrop: "static",
                         show: true
                     });
+
+                    modal.find('.btn.btn-primary').unbind().click(function() {
+                        modal.modal('hide');
+
+                        yes();
+                    });
+
+                    modal.find('.btn.btn-secondary').unbind().click(function() {
+                        modal.modal('hide');
+
+                        no();
+                    });
+
+                    modal.unbind().on('hidden', function () {
+                        if (self.modal)
+                            self.modal.modal('show'); //Show the progress modal again
+                    });
+                };
+
+                pending_transaction.ask_to_increase_fee = function(yes, no, customFee, recommendedFee) {
+                    var self = this;
+
+                    if (self.modal)
+                        self.modal.modal('hide'); //Hide the transaction progress modal
+
+                    var modal = $('#ask-to-increase-fee');
+
+                    modal.modal({
+                        keyboard: false,
+                        backdrop: "static",
+                        show: true
+                    });
+
+                    var modal_body = modal.find('.modal-body');
+
+                    var spans = modal_body.find('span');
+
+                    spans.eq(0).text(formatSymbol(customFee.intValue(), symbol_btc));
+
+                    spans.eq(1).text(formatSymbol(recommendedFee.intValue(), symbol_btc));
 
                     modal.find('.btn.btn-primary').unbind().click(function() {
                         modal.modal('hide');
@@ -742,9 +735,13 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
                     }
                 }
 
-                var input_fee = precisionToSatoshiBN(el.find('input[name="fees"]').val());
-                if (input_fee.compareTo(BigInteger.ZERO) > 0) {
-                    pending_transaction.fee = input_fee;
+                var input_fee_string = el.find('input[name="fees"]').val();
+                if (input_fee_string != null && input_fee_string.length > 0) {
+                    var input_fee = precisionToSatoshiBN(input_fee_string);
+                    if (input_fee.compareTo(BigInteger.ZERO) >= 0) {
+                        pending_transaction.fee = input_fee;
+                        pending_transaction.did_specify_fee_manually = true;
+                    }
                 }
 
                 var recipients = el.find(".recipient");
@@ -884,7 +881,7 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
                             //Archive the address
                             MyWallet.setAddressTag(address, 2);
 
-                            MyWallet.setAddressLabel(address, mobile_number + ' (Sent Via SMS)');
+                            MyWallet.setAddressLabel(address, mobile_number + ' Sent Via SMS');
 
                             pending_transaction.generated_addresses.push(address);
 
@@ -918,7 +915,7 @@ function startTxUI(el, type, pending_transaction, dont_ask_for_anon) {
                                 //Archive the address
                                 MyWallet.setAddressTag(address, 2);
 
-                                MyWallet.setAddressLabel(address, send_to_email + ' (Sent Via Email)');
+                                MyWallet.setAddressLabel(address, send_to_email + ' Sent Via Email');
 
                                 pending_transaction.generated_addresses.push(address);
 
@@ -1174,13 +1171,14 @@ function initNewTx() {
         extra_private_keys : {},
         listeners : [],
         is_cancelled : false,
-        ask_to_send_shared : false,
         base_fee : BigInteger.valueOf(10000),
         min_free_output_size : BigInteger.valueOf(1000000),
         allow_adjust : true,
         ready_to_send_header : 'Transaction Ready to Send.',
         min_input_confirmations : 0,
+        do_not_use_unspent_cache : false,
         min_input_size : BigInteger.ZERO,
+        did_specify_fee_manually : false,
         addListener : function(listener) {
             this.listeners.push(listener);
         },
@@ -1240,13 +1238,13 @@ function initNewTx() {
                     }
                 }, function(e) {
                     self.error(e);
-                }, self.min_input_confirmations);
+                }, self.min_input_confirmations, self.do_not_use_unspent_cache);
             } catch (e) {
                 self.error(e);
             }
         },
         isSelectedValueSufficient : function(txValue, availableValue) {
-          return availableValue.compareTo(txValue) == 0 || availableValue.compareTo(txValue.add(this.min_free_output_size)) >= 0;
+            return availableValue.compareTo(txValue) == 0 || availableValue.compareTo(txValue.add(this.min_free_output_size)) >= 0;
         },
         //Select Outputs and Construct transaction
         makeTransaction : function() {
@@ -1262,17 +1260,6 @@ function initNewTx() {
                 var txValue = BigInteger.ZERO;
                 for (var i = 0; i < self.to_addresses.length; ++i) {
                     txValue = txValue.add(self.to_addresses[i].value);
-                }
-
-                var isEscrow = false;
-
-                //If we have any escrow outputs we increase the fee to 0.05 BTC
-                for (var i =0; i < self.to_addresses.length; ++i) {
-                    var addrObj = self.to_addresses[i];
-                    if (addrObj.m != null) {
-                        isEscrow = true;
-                        break;
-                    }
                 }
 
                 var availableValue = BigInteger.ZERO;
@@ -1296,9 +1283,13 @@ function initNewTx() {
                         throw 'Unable to decode output address from transaction hash ' + out.tx_hash;
                     }
 
+                    if (out.script == null) {
+                        throw 'Output script is null (' + out.tx_hash + ':' + out.tx_output_n + ')';
+                    }
+
                     var b64hash = Crypto.util.bytesToBase64(Crypto.util.hexToBytes(out.tx_hash));
 
-                    var input =  new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: out.tx_output_n, value:out.value}, script: out.script, sequence: 4294967295});
+                    var input = new Bitcoin.TransactionIn({outpoint: {hash: b64hash, index: out.tx_output_n, value:out.value}, script: out.script, sequence: 4294967295});
 
                     return {addr : addr , input : input}
                 };
@@ -1491,17 +1482,32 @@ function initNewTx() {
 
                 var fee_is_zero = (!self.fee || self.fee.compareTo(self.base_fee) < 0);
 
-                //Priority under 57 million requires a 0.0005 BTC transaction fee (see https://en.bitcoin.it/wiki/Transaction_fees)
-                if (fee_is_zero && (forceFee || kilobytes > 1)) {
+                var set_fee_auto = function() {
                     //Forced Fee
                     self.fee = self.base_fee.multiply(BigInteger.valueOf(kilobytes));
 
                     self.makeTransaction();
-                } else if (fee_is_zero && (MyWallet.getRecommendIncludeFee() || (priority < 77600000 || isEscrow))) {
-                    self.ask_for_fee(function() {
-                        self.fee = self.base_fee.multiply(BigInteger.valueOf(kilobytes));
+                }
 
-                        self.makeTransaction();
+                //Priority under 57 million requires a 0.0005 BTC transaction fee (see https://en.bitcoin.it/wiki/Transaction_fees)
+                if (fee_is_zero && (forceFee || kilobytes > 1)) {
+                    if (self.fee && self.did_specify_fee_manually) {
+                        self.ask_to_increase_fee(function() {
+                            set_fee_auto();
+                        }, function() {
+                            self.tx = sendTx;
+
+                            self.determinePrivateKeys(function() {
+                                self.signInputs();
+                            });
+                        }, self.fee, self.base_fee.multiply(BigInteger.valueOf(kilobytes)));
+                    } else {
+                        //Forced Fee
+                        set_fee_auto();
+                    }
+                } else if (fee_is_zero && (MyWallet.getRecommendIncludeFee() || priority < 77600000)) {
+                    self.ask_for_fee(function() {
+                        set_fee_auto();
                     }, function() {
                         self.tx = sendTx;
 
@@ -1523,6 +1529,9 @@ function initNewTx() {
         ask_for_fee : function(yes, no) {
             yes();
         },
+        ask_to_increase_fee : function(yes, no, customFee, recommendedFee) {
+            yes();
+        },
         insufficient_funds : function(amount_required, amount_available, yes, no) {
             no();
         },
@@ -1534,10 +1543,20 @@ function initNewTx() {
                     throw 'Transaction Cancelled';
                 }
 
+                if (self.selected_outputs.length != self.tx.ins.length) {
+                   throw 'Selected Outputs Count != Tx Inputs Length'
+                }
+
                 var tmp_cache = {};
 
-                for (var i in self.selected_outputs) {
+                for (var i = 0; i < self.selected_outputs.length; ++i) {
                     var connected_script = self.selected_outputs[i].script;
+
+                    if (connected_script == null) {
+                        console.log('Output:')
+                        console.log(self.selected_outputs[i]);
+                        throw 'determinePrivateKeys() Connected script is null';
+                    }
 
                     if (connected_script.priv_to_use == null) {
                         var pubKeyHash = connected_script.simpleOutPubKeyHash();
@@ -1659,8 +1678,12 @@ function initNewTx() {
                     self.worker[i].postMessage({cmd : 'seed', seed : Crypto.util.bytesToHex(seed)});
                 }
 
-                for (var outputN in self.selected_outputs) {
+                for (var outputN = 0; outputN < self.selected_outputs.length; ++ outputN) {
                     var connected_script = self.selected_outputs[outputN].script;
+
+                    if (connected_script == null) {
+                       throw 'signWebWorker() Connected Script Is Null';
+                    }
 
                     self.worker[outputN % nWorkers].postMessage({cmd : 'sign_input', tx : self.tx, outputN : outputN, priv_to_use : connected_script.priv_to_use, connected_script : connected_script});
                 }
@@ -1683,6 +1706,10 @@ function initNewTx() {
                         self.invoke('on_sign_progress', outputN+1);
 
                         var connected_script = self.selected_outputs[outputN].script;
+
+                        if (connected_script == null) {
+                            throw 'signNormal() Connected Script Is Null';
+                        }
 
                         var signed_script = signInput(self.tx, outputN, connected_script.priv_to_use, connected_script);
 
@@ -1737,7 +1764,7 @@ function initNewTx() {
         },
         terminateWorkers : function() {
             if (this.worker) {
-                for (var i in this.worker)  {
+                for (var i = 0; i < this.worker.length; ++i)  {
                     try {
                         this.worker[i].terminate();
                     } catch (e) { }
@@ -1805,8 +1832,8 @@ function initNewTx() {
 
             if (!this.has_pushed && this.generated_addresses.length > 0) {
                 //When an error occurs during send (or user cancelled) we need to remove the addresses we generated
-                for (var key in this.generated_addresses) {
-                    MyWallet.deleteAddress(this.generated_addresses[key]);
+                for (var i = 0; i < this.generated_addresses.length; ++i) {
+                    MyWallet.deleteAddress(this.generated_addresses[i]);
                 }
 
                 if (this.has_saved_addresses)

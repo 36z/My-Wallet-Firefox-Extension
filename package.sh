@@ -9,7 +9,7 @@ cd 'My-Wallet-Firefox-Extension'
 EXTENSION_DATA_DIR="./extension/resources/blockchain/data"
 
 WEB_CONTENT="../website/WebContent"
-DOWNLOAD_HTML=false;
+DOWNLOAD_HTML=true;
 RESOURCE_DIR="$WEB_CONTENT/Resources"
 HTML_DIR="$EXTENSION_DATA_DIR"
 
@@ -38,7 +38,7 @@ cp $RESOURCE_DIR/facebook.png  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/facebook14.png  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/bitcoin-wallet-app.png  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/app-store.png  $EXTENSION_DATA_DIR/Resources/
-cp $RESOURCE_DIR/logo_firefox.png  $EXTENSION_DATA_DIR/Resources/logo_new.png
+cp $RESOURCE_DIR/logo_firefox.png  $EXTENSION_DATA_DIR/Resources/logo.png
 cp $RESOURCE_DIR/advanced.png  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/chart_bar.png  $EXTENSION_DATA_DIR/Resources/
 cp $RESOURCE_DIR/ajax-loader.gif  $EXTENSION_DATA_DIR/Resources/
@@ -134,3 +134,6 @@ zip -r ./Extension.zip *  -x "*/\.*"
 mv ./Extension.zip ../blockchain.xpi
 
 cd ..
+
+git commit -a -m "Sync Local"
+git push
